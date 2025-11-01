@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A tiny, fast example site" />
+  <title>My Fast Site</title>
+
+  <!-- Critical CSS inline for fastest paint (small styles only) -->
+  <style>
+    /* small critical CSS */
+    :root{--bg:#fff;--fg:#111;--accent:#0b6;}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{display:grid;place-items:center;background:var(--bg);color:var(--fg);padding:24px}
+    .card{max-width:800px;width:100%;border-radius:12px;padding:28px;box-shadow:0 6px 30px rgba(0,0,0,.08)}
+    h1{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.4rem)}
+    p{margin:0 0 16px;line-height:1.5}
+    a.button{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:white;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+  </style>
+
+  <!-- Load the rest of CSS file (non-blocking) -->
+  <link rel="preload" href="styles.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="styles.css"></noscript>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1>Welcome — My Fast Site</h1>
+    <p>This is a small, optimized HTML site. Edit <code>index.html</code> and <code>styles.css</code> to customize.</p>
+    <a class="button" href="#contact">Contact</a>
+  </main>
+
+  <!-- lightweight script at end of body; defer if external -->
+  <script>
+    // small interactive enhancement (non-blocking)
+    document.addEventListener('click', e => {
+      if (e.target.matches('.button')) {
+        e.target.textContent = 'Thanks!';
+      }
+    });
+  </script>
+
+  <!-- If using Intercom or other widget, paste it directly here before </body> -->
+<script>
+  window.intercomSettings = {
+    api_base: "https://api-iam.intercom.io",
+    app_id: "wpspekbt",
+  };
+</script>
+
+
+<script>
+  // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/wpspekbt'
+  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/wpspekbt';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+</body>
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- your content -->
+</body>
+
+</html>

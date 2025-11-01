@@ -1,0 +1,5 @@
+/* styles.css - loaded async via preload to avoid blocking */
+body { font-size:16px; }
+@media (min-width:900px) {
+  .card { padding:48px; }
+}
