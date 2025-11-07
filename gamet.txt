@@ -1,0 +1,543 @@
+import React, { useState } from 'react';
+import { Coffee, Building2, Utensils, Hotel, Factory, GraduationCap, Heart, Users, CheckCircle, XCircle, Award } from 'lucide-react';
+
+const CoffeeMachineGame = () => {
+  const [level, setLevel] = useState(1);
+  const [gameData, setGameData] = useState({
+    branche: '',
+    einsatzart: '',
+    kundentyp: '',
+    mitarbeiter: '',
+    getraenke: [],
+    festwasser: ''
+  });
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    firma: '',
+    ansprechpartner: '',
+    email: '',
+    telefon: '',
+    nachricht: ''
+  });
+
+  const branchen = [
+    { id: 'buero', name: 'Büro', icon: Building2, color: 'bg-blue-500' },
+    { id: 'gastronomie', name: 'Gastronomie', icon: Utensils, color: 'bg-orange-500' },
+    { id: 'hotel', name: 'Hotel', icon: Hotel, color: 'bg-purple-500' },
+    { id: 'produktion', name: 'Produktion / Werkshalle', icon: Factory, color: 'bg-gray-600' },
+    { id: 'bildung', name: 'Bildungseinrichtung', icon: GraduationCap, color: 'bg-green-500' },
+    { id: 'health', name: 'Health & Care', icon: Heart, color: 'bg-red-500' }
+  ];
+
+  const mitarbeiterGroessen = [
+    { id: 'bis10', label: 'Bis 10 Mitarbeiter', value: 'bis10' },
+    { id: '11-50', label: '11–50 Mitarbeiter', value: '11-50' },
+    { id: '51-200', label: '51–200 Mitarbeiter', value: '51-200' },
+    { id: 'ueber200', label: 'Über 200 Mitarbeiter', value: 'ueber200' }
+  ];
+
+  const getraenkeOptionen = [
+    { id: 'kaffee', label: 'Kaffee', icon: '☕' },
+    { id: 'cappuccino', label: 'Cappuccino / Latte', icon: '🥛' },
+    { id: 'tee', label: 'Tee', icon: '🍵' },
+    { id: 'kakao', label: 'Kakao / Spezialgetränke', icon: '🍫' }
+  ];
+
+  const handleBrancheSelect = (branche) => {
+    setGameData({ ...gameData, branche });
+    setLevel(2);
+  };
+
+  const handleEinsatzart = (art) => {
+    if (art === 'event') {
+      setLevel(-1);
+    } else {
+      setGameData({ ...gameData, einsatzart: art });
+      setLevel(3);
+    }
+  };
+
+  const handleKundentyp = (typ) => {
+    if (typ === 'privat') {
+      setLevel(-2);
+    } else {
+      setGameData({ ...gameData, kundentyp: typ });
+      setLevel(4);
+    }
+  };
+
+  const handleMitarbeiter = (anzahl) => {
+    setGameData({ ...gameData, mitarbeiter: anzahl });
+    setLevel(5);
+  };
+
+  const toggleGetraenk = (getraenk) => {
+    const current = gameData.getraenke;
+    const updated = current.includes(getraenk)
+      ? current.filter(g => g !== getraenk)
+      : [...current, getraenk];
+    setGameData({ ...gameData, getraenke: updated });
+  };
+
+  const handleFestwasser = (antwort) => {
+    setGameData({ ...gameData, festwasser: antwort });
+    setLevel(6);
+  };
+
+  const getMaschinenEmpfehlung = () => {
+    const { mitarbeiter, getraenke, festwasser } = gameData;
+    
+    if (mitarbeiter === 'bis10') {
+      return {
+        name: 'Compact Pro 3000',
+        modelle: ['Jura GIGA X3', 'WMF 1100 S', 'Melitta Cafina XT4'],
+        benefits: [
+          'Perfekt für kleine Teams bis 10 Personen',
+          'Kompaktes Design mit vollautomatischem Milchsystem',
+          'Einfache Reinigung und niedriger Wartungsaufwand'
+        ]
+      };
+    } else if (mitarbeiter === '11-50') {
+      return {
+        name: 'Business Line 5000',
+        modelle: ['WMF 1500 S+', 'Schaerer Coffee Art Plus', 'Jura X8'],
+        benefits: [
+          'Hoher Durchsatz für mittlere Betriebe (50-150 Tassen/Tag)',
+          'Automatisches Milchsystem mit perfektem Milchschaum',
+          'Telemetrie-Service für vorausschauende Wartung'
+        ]
+      };
+    } else if (mitarbeiter === '51-200') {
+      return {
+        name: 'Professional XL 8000',
+        modelle: ['Franke A800', 'WMF 9000 S+', 'Schaerer Coffee Soul'],
+        benefits: [
+          'Leistungsstarke Maschinen für hohen Bedarf (200-400 Tassen/Tag)',
+          'Doppelmühlen-System für verschiedene Kaffeesorten',
+          'Festwasseranschluss möglich für unterbrechungsfreien Betrieb'
+        ]
+      };
+    } else {
+      return {
+        name: 'Industrial Power 10000',
+        modelle: ['Franke SB1200', 'WMF 5000 S+', 'Schaerer Coffee Prime'],
+        benefits: [
+          'Industrielösung für Großbetriebe (über 500 Tassen/Tag)',
+          'Robuste Technik mit maximaler Betriebssicherheit',
+          'Full-Service-Paket mit 24h-Notdienst inklusive'
+        ]
+      };
+    }
+  };
+
+  const handleFormSubmit = () => {
+    if (!formData.firma || !formData.ansprechpartner || !formData.email || !formData.telefon) {
+      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+    alert('Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Wir melden uns in Kürze bei Ihnen.');
+    // Hier würde die Datenübermittlung stattfinden
+  };
+
+  const restartGame = () => {
+    setLevel(1);
+    setGameData({
+      branche: '',
+      einsatzart: '',
+      kundentyp: '',
+      mitarbeiter: '',
+      getraenke: [],
+      festwasser: ''
+    });
+    setShowForm(false);
+    setFormData({
+      firma: '',
+      ansprechpartner: '',
+      email: '',
+      telefon: '',
+      nachricht: ''
+    });
+  };
+
+  // Level -1: Event-Abbruch
+  if (level === -1) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+          <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Event-Anfrage</h2>
+          <p className="text-gray-600 mb-6">
+            Unsere Lösungen sind für den dauerhaften Einsatz konzipiert und nicht für einmalige Events geeignet.
+          </p>
+          <button
+            onClick={restartGame}
+            className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
+          >
+            Zurück zum Start
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level -2: Privatkunden-Abbruch
+  if (level === -2) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+          <XCircle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">B2B only</h2>
+          <p className="text-gray-600 mb-6">
+            Wir sind ausschließlich für Geschäftskunden tätig und können Privatpersonen nicht versorgen.
+          </p>
+          <button
+            onClick={restartGame}
+            className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition"
+          >
+            Zurück zum Start
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 1: Branchenwahl
+  if (level === 1) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 py-12">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <Coffee className="w-16 h-16 text-indigo-600 mx-auto mb-4" />
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Kaffeemaschinen-Berater</h1>
+            <p className="text-gray-600">Finden Sie die perfekte Lösung für Ihr Unternehmen</p>
+            <div className="mt-4 text-sm text-indigo-600 font-semibold">Level 1 von 6</div>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Wählen Sie Ihre Branche</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {branchen.map((branche) => {
+              const Icon = branche.icon;
+              return (
+                <button
+                  key={branche.id}
+                  onClick={() => handleBrancheSelect(branche.id)}
+                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
+                >
+                  <div className={`${branche.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <Icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800">{branche.name}</h3>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 2: Einsatzart
+  if (level === 2) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-sm text-purple-600 font-semibold mb-4">Level 2 von 6</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Wie möchten Sie die Maschine nutzen?</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <button
+              onClick={() => handleEinsatzart('dauerhaft')}
+              className="w-full bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all text-left"
+            >
+              <CheckCircle className="w-10 h-10 text-green-500 mb-2" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Dauerhafter Einsatz im Unternehmen</h3>
+              <p className="text-gray-600">Für den täglichen Gebrauch in Ihrem Betrieb</p>
+            </button>
+            
+            <button
+              onClick={() => handleEinsatzart('event')}
+              className="w-full bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all text-left"
+            >
+              <XCircle className="w-10 h-10 text-red-500 mb-2" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Einmaliges Event</h3>
+              <p className="text-gray-600">Für eine einzelne Veranstaltung</p>
+            </button>
+          </div>
+          
+          <button onClick={restartGame} className="mt-8 text-purple-600 hover:text-purple-800 mx-auto block">
+            ← Zurück zur Branchenwahl
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 3: Kundentyp
+  if (level === 3) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-sm text-green-600 font-semibold mb-4">Level 3 von 6</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Für wen ist die Maschine?</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <button
+              onClick={() => handleKundentyp('gewerblich')}
+              className="w-full bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all text-left"
+            >
+              <Building2 className="w-10 h-10 text-blue-500 mb-2" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Gewerbliche Nutzung</h3>
+              <p className="text-gray-600">Für Unternehmen und Organisationen</p>
+            </button>
+            
+            <button
+              onClick={() => handleKundentyp('privat')}
+              className="w-full bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all text-left"
+            >
+              <Users className="w-10 h-10 text-orange-500 mb-2" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Private Nutzung</h3>
+              <p className="text-gray-600">Für den privaten Haushalt</p>
+            </button>
+          </div>
+          
+          <button onClick={() => setLevel(2)} className="mt-8 text-green-600 hover:text-green-800 mx-auto block">
+            ← Zurück
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 4: Mitarbeiteranzahl
+  if (level === 4) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-100 p-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-sm text-orange-600 font-semibold mb-4">Level 4 von 6</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Wie viele Mitarbeiter haben Sie?</h2>
+            <p className="text-gray-600">Dies hilft uns, die richtige Maschinengröße zu empfehlen</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {mitarbeiterGroessen.map((groesse) => (
+              <button
+                key={groesse.id}
+                onClick={() => handleMitarbeiter(groesse.value)}
+                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all"
+              >
+                <Users className="w-10 h-10 text-orange-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-gray-800">{groesse.label}</h3>
+              </button>
+            ))}
+          </div>
+          
+          <button onClick={() => setLevel(3)} className="mt-8 text-orange-600 hover:text-orange-800 mx-auto block">
+            ← Zurück
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 5: Getränkeauswahl
+  if (level === 5) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-100 p-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-sm text-rose-600 font-semibold mb-4">Level 5 von 6</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Welche Getränke möchten Sie anbieten?</h2>
+            <p className="text-gray-600">Mehrfachauswahl möglich</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {getraenkeOptionen.map((getraenk) => (
+              <button
+                key={getraenk.id}
+                onClick={() => toggleGetraenk(getraenk.id)}
+                className={`rounded-xl p-6 shadow-lg transform transition-all ${
+                  gameData.getraenke.includes(getraenk.id)
+                    ? 'bg-rose-500 text-white scale-105'
+                    : 'bg-white text-gray-800 hover:shadow-2xl hover:scale-105'
+                }`}
+              >
+                <div className="text-4xl mb-2">{getraenk.icon}</div>
+                <h3 className="text-lg font-bold">{getraenk.label}</h3>
+                {gameData.getraenke.includes(getraenk.id) && (
+                  <CheckCircle className="w-6 h-6 mt-2 mx-auto" />
+                )}
+              </button>
+            ))}
+          </div>
+          
+          <button
+            onClick={() => gameData.getraenke.length > 0 ? handleFestwasser('') : null}
+            disabled={gameData.getraenke.length === 0}
+            className={`w-full py-4 rounded-lg font-bold text-lg transition ${
+              gameData.getraenke.length > 0
+                ? 'bg-rose-500 text-white hover:bg-rose-600'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            Weiter
+          </button>
+          
+          <button onClick={() => setLevel(4)} className="mt-4 text-rose-600 hover:text-rose-800 mx-auto block">
+            ← Zurück
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Level 6: Festwasseranschluss & Empfehlung
+  if (level === 6 && !showForm) {
+    const empfehlung = getMaschinenEmpfehlung();
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 p-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <Award className="w-20 h-20 text-emerald-600 mx-auto mb-4" />
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Ihre Empfehlung</h1>
+            <p className="text-xl text-emerald-600 font-semibold">{empfehlung.name}</p>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-2xl p-8 mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Passende Modelle:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              {empfehlung.modelle.map((modell, idx) => (
+                <div key={idx} className="bg-emerald-50 rounded-lg p-4 text-center">
+                  <Coffee className="w-10 h-10 text-emerald-600 mx-auto mb-2" />
+                  <p className="font-semibold text-gray-800">{modell}</p>
+                </div>
+              ))}
+            </div>
+            
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Ihre Vorteile:</h3>
+            <div className="space-y-4">
+              {empfehlung.benefits.map((benefit, idx) => (
+                <div key={idx} className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-emerald-500 mr-3 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">{benefit}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Interessiert?</h3>
+            <p className="text-gray-600 mb-6">Lassen Sie sich von unseren Experten beraten!</p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-emerald-600 transition"
+            >
+              Jetzt kostenlos beraten lassen
+            </button>
+          </div>
+          
+          <button onClick={restartGame} className="mt-6 text-emerald-600 hover:text-emerald-800 mx-auto block">
+            Neue Beratung starten
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Lead-Formular
+  if (showForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 py-12">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-2xl p-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Kontaktformular</h2>
+            <p className="text-gray-600 mb-8 text-center">
+              Füllen Sie das Formular aus und wir melden uns zeitnah bei Ihnen!
+            </p>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Firma *</label>
+                <input
+                  type="text"
+                  value={formData.firma}
+                  onChange={(e) => setFormData({ ...formData, firma: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Ihr Firmenname"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Ansprechpartner *</label>
+                <input
+                  type="text"
+                  value={formData.ansprechpartner}
+                  onChange={(e) => setFormData({ ...formData, ansprechpartner: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Vor- und Nachname"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">E-Mail *</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="ihre@email.de"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Telefon *</label>
+                <input
+                  type="tel"
+                  value={formData.telefon}
+                  onChange={(e) => setFormData({ ...formData, telefon: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="+49 123 456789"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Nachricht (optional)</label>
+                <textarea
+                  value={formData.nachricht}
+                  onChange={(e) => setFormData({ ...formData, nachricht: e.target.value })}
+                  rows="4"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Haben Sie noch Fragen oder Anmerkungen?"
+                />
+              </div>
+              
+              <button
+                onClick={handleFormSubmit}
+                className="w-full bg-indigo-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition"
+              >
+                Anfrage absenden
+              </button>
+            </div>
+            
+            <button
+              onClick={() => setShowForm(false)}
+              className="mt-4 text-indigo-600 hover:text-indigo-800 mx-auto block"
+            >
+              ← Zurück zur Empfehlung
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export default CoffeeMachineGame;

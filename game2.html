@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B-Survivor: Ihr Kaffee-Maschinen-Avatar</title>
+    <style>
+        /* Seriöse Business-UX, mobilfreundlich */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1, h2 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 20px; }
+        .level { display: none; margin-bottom: 30px; }
+        .level-buttons button { background-color: #5cb85c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; font-size: 16px; transition: background-color 0.3s; }
+        .level-buttons button:hover { background-color: #4cae4c; }
+        .level-buttons button.multi-select { background-color: #f0ad4e; }
+        .level-buttons button.multi-select.selected { background-color: #eb931c; border: 2px solid #fff; }
+        .progress-bar { height: 20px; background-color: #ddd; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        .progress { height: 100%; width: 0%; background-color: #0056b3; text-align: center; line-height: 20px; color: white; transition: width 0.5s; }
+        .fail-screen { display: none; text-align: center; color: #d9534f; }
+        .final-screen { display: none; }
+        /* Formular Styling */
+        form label { display: block; margin-top: 10px; font-weight: bold; }
+        form input[type="text"], form input[type="email"], form input[type="tel"] { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .dsgvo-note { font-size: 0.8em; color: #666; margin-top: 15px; }
+        .submit-btn { background-color: #007bff; color: white; padding: 15px 25px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px; font-size: 18px; width: 100%; }
+        .submit-btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>B2B-Survivor: Ihr Weg zur perfekten Kaffeemaschine ☕</h1>
+    </header>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress-bar">Level 0/6</div>
+    </div>
+
+    <section id="level-1" class="level current-level">
+        <h2>Level 1: Wählen Sie Ihren Avatar (Ihre Branche)</h2>
+        <p>Welche Umgebung beschreibt Ihren täglichen Einsatzort am besten?</p>
+        <div class="level-buttons">
+            <button onclick="nextLevel(1, 'Büro')">Büro</button>
+            <button onclick="nextLevel(1, 'Gastronomie')">Gastronomie</button>
+            <button onclick="nextLevel(1, 'Hotel')">Hotel</button>
+            <button onclick="nextLevel(1, 'Produktion / Werkshalle')">Produktion / Werkshalle</button>
+            <button onclick="nextLevel(1, 'Bildungseinrichtung')">Bildungseinrichtung</button>
+            <button onclick="nextLevel(1, 'Health & Care')">Health & Care (Krankenhaus, Pflege)</button>
+        </div>
+    </section>
+
+    <section id="level-2" class="level">
+        <h2>Level 2: Einsatzart</h2>
+        <p>Für welche Art von Nutzung ist die Kaffeelösung vorgesehen?</p>
+        <div class="level-buttons">
+            <button onclick="nextLevel(2, 'Dauerhafter Einsatz im Unternehmen')">Dauerhafter Einsatz im Unternehmen</button>
+            <button onclick="failGame('Unsere Lösungen sind für den **dauerhaften Einsatz** konzipiert und nicht für einmalige Events.')">Einmaliges Event</button>
+        </div>
+    </section>
+
+    <section id="level-3" class="level">
+        <h2>Level 3: Privat oder Gewerblich</h2>
+        <p>Wer wird der Hauptnutzer und Betreiber der Kaffeelösung sein?</p>
+        <div class="level-buttons">
+            <button onclick="nextLevel(3, 'Gewerblich')">Gewerblich</button>
+            <button onclick="failGame('Wir sind **ausschließlich für Geschäftskunden** tätig und können Privatpersonen nicht versorgen.')">Privat</button>
+        </div>
+    </section>
+
+    <section id="level-4" class="level">
+        <h2>Level 4: Tägliche Kapazität</h2>
+        <p>Wie viele Mitarbeiter versorgen Sie (oder wie viele Tassen pro Tag benötigen Sie ca.)?</p>
+        <div class="level-buttons">
+            <button onclick="nextLevel(4, 'Bis 10')">Bis 10</button>
+            <button onclick="nextLevel(4, '11–50')">11–50</button>
+            <button onclick="nextLevel(4, '51–200')">51–200</button>
+            <button onclick="nextLevel(4, 'Über 200')">Über 200</button>
+        </div>
+    </section>
+
+    <section id="level-5" class="level">
+        <h2>Level 5: Gesuchte Vielfalt</h2>
+        <p>Welche Getränke sollen verfügbar sein? (Mehrfachauswahl möglich)</p>
+        <div class="level-buttons" id="drink-selection">
+            <button class="multi-select" data-value="Kaffee" onclick="toggleMultiSelect(this)">Kaffee (Schwarz)</button>
+            <button class="multi-select" data-value="Cappuccino / Latte" onclick="toggleMultiSelect(this)">Cappuccino / Latte (Milchgetränke)</button>
+            <button class="multi-select" data-value="Tee" onclick="toggleMultiSelect(this)">Tee (Heißwasser)</button>
+            <button class="multi-select" data-value="Kakao / Spezialgetränke" onclick="toggleMultiSelect(this)">Kakao / Spezialgetränke</button>
+        </div>
+        <button style="margin-top: 20px;" onclick="collectDrinks()">Weiter zu Level 6</button>
+    </section>
+
+    <section id="level-6" class="level">
+        <h2>Level 6: Wasserversorgung</h2>
+        <p>Ist am geplanten Aufstellort ein Festwasseranschluss vorhanden?</p>
+        <div class="level-buttons">
+            <button onclick="nextLevel(6, 'Ja')">Ja (Festwasseranschluss)</button>
+            <button onclick="nextLevel(6, 'Nein')">Nein (Tanklösung)</button>
+        </div>
+    </section>
+
+    <section id="final-screen" class="level final-screen">
+        <h2>🎉 Glückwunsch! Mission erfüllt!</h2>
+        <h3 id="recommendation-header"></h3>
+        <p id="recommendation-text"></p>
+        
+        <hr>
+
+        <h3>Ihre Maschinenvoraussetzungen sind erfüllt. Jetzt Kontakt aufnehmen!</h3>
+        <form id="lead-form">
+            <label for="firmenname">Firmenname (Pflichtfeld)</label>
+            <input type="text" id="firmenname" name="firmenname" required>
+
+            <label for="vorname">Vorname (Pflichtfeld)</label>
+            <input type="text" id="vorname" name="vorname" required>
+
+            <label for="nachname">Nachname (Pflichtfeld)</label>
+            <input type="text" id="nachname" name="nachname" required>
+
+            <label for="email">E-Mail-Adresse (Pflichtfeld)</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="telefon">Telefonnummer (Pflichtfeld)</label>
+            <input type="tel" id="telefon" name="telefon" required>
+
+            <p class="dsgvo-note">Demo-Text: Mit dem Absenden des Formulars stimmen Sie der DSGVO-konformen Verarbeitung Ihrer Daten zum Zweck der Kontaktaufnahme und Beratung zu. Eine Weitergabe an Dritte findet nicht statt.</p>
+
+            <button type="submit" class="submit-btn">Empfehlung anfordern & Beratung starten</button>
+        </form>
+        <p id="form-status" style="margin-top: 15px; color: green;"></p>
+    </section>
+
+    <section id="fail-screen" class="level fail-screen">
+        <h2>🛑 Spielende (Ausschlusskriterium getroffen)</h2>
+        <p id="fail-message"></p>
+        <p>Vielen Dank für Ihr Interesse. Unsere Lösungen sind für Ihre Anforderungen nicht geeignet.</p>
+        <button onclick="location.reload()">Neustart (Branche neu wählen)</button>
+    </section>
+</div>
+
+<script>
+    const gameState = {
+        currentLevel: 1,
+        maxLevel: 6,
+        data: {} // Speichert alle Antworten für die Empfehlung und das Lead-Formular
+    };
+
+    // Zeigt das aktuelle Level an und aktualisiert die Fortschrittsanzeige
+    function showLevel(level) {
+        // Alle Level ausblenden
+        document.querySelectorAll('.level').forEach(el => el.style.display = 'none');
+        
+        // Gewünschtes Level anzeigen
+        const currentLevelElement = document.getElementById('level-' + level);
+        if (currentLevelElement) {
+            currentLevelElement.style.display = 'block';
+        }
+        
+        // Fortschrittsbalken aktualisieren
+        const progressEl = document.getElementById('progress-bar');
+        const percentage = Math.round(((level - 1) / gameState.maxLevel) * 100);
+        progressEl.style.width = percentage + '%';
+        progressEl.textContent = `Level ${level - 1}/${gameState.maxLevel}`;
+    }
+
+    // Geht zum nächsten Level und speichert die Antwort
+    function nextLevel(level, answer) {
+        gameState.data['Level' + level] = answer;
+        gameState.currentLevel++;
+        if (gameState.currentLevel > gameState.maxLevel) {
+            showFinalScreen();
+        } else {
+            showLevel(gameState.currentLevel);
+        }
+    }
+
+    // Beendet das "Spiel" mit einer Ausschlussbotschaft
+    function failGame(message) {
+        document.getElementById('fail-message').innerHTML = message;
+        document.getElementById('fail-screen').style.display = 'block';
+        
+        // Restliche Level und Fortschritt ausblenden
+        document.querySelectorAll('.level:not(#fail-screen)').forEach(el => el.style.display = 'none');
+        document.getElementById('progress-bar').parentNode.style.display = 'none';
+    }
+
+    // Toggle-Funktion für die Mehrfachauswahl (Level 5)
+    function toggleMultiSelect(button) {
+        button.classList.toggle('selected');
+    }
+
+    // Sammelt die ausgewählten Getränke aus Level 5
+    function collectDrinks() {
+        const selectedDrinks = [];
+        document.querySelectorAll('#drink-selection .selected').forEach(button => {
+            selectedDrinks.push(button.getAttribute('data-value'));
+        });
+
+        if (selectedDrinks.length === 0) {
+            alert("Bitte wählen Sie mindestens ein Getränk aus, um fortzufahren.");
+            return;
+        }
+
+        nextLevel(5, selectedDrinks.join(', '));
+    }
+
+    // Logik für die Maschinenempfehlung
+    function getRecommendation() {
+        // Einfache Logik basierend auf Level 4 (Mitarbeiteranzahl) und Level 5 (Getränkevielfalt)
+        const mitarbeiter = gameState.data['Level4'];
+        const getraenke = gameState.data['Level5'];
+
+        let kategorie = "Unbekannt";
+        let benefits = [];
+
+        // Logik für die Maschinenkategorie
+        if (mitarbeiter === 'Bis 10') {
+            kategorie = "Komfort-Kompakt-Maschine (Tischgerät)";
+            benefits = ["Platzsparend und leise", "Intuitive Bedienung", "Geringer Serviceaufwand"];
+        } else if (mitarbeiter === '11–50') {
+            kategorie = "Semi-Professionelle Maschine (Mittelklasse)";
+            benefits = ["Hohe Tassenleistung (Durchsatz)", "Einfache, automatische Reinigung", "Modular für Milch- und Spezialgetränke"];
+        } else if (mitarbeiter === '51–200') {
+            kategorie = "Professionelle Vollautomaten-Serie (High-End)";
+            benefits = ["Extrem hoher Durchsatz und kurze Wartezeiten", "Frischmilchsysteme der neuesten Generation", "Vollumfänglicher Servicevertrag möglich"];
+        } else if (mitarbeiter === 'Über 200') {
+            kategorie = "Individuelle Großlösung (Modular-System)";
+            benefits = ["Anbindung an Bezahlsysteme (Vending)", "Höchste Belastbarkeit und Zuverlässigkeit", "Permanenter Kundenservice (24/7)"];
+        }
+
+        // Anpassung der Benefits basierend auf Getränkeauswahl
+        if (getraenke.includes('Cappuccino / Latte')) {
+            benefits.push("Hervorragendes Milchsystem (Milchschaum-Qualität)");
+        }
+        if (getraenke.includes('Kakao / Spezialgetränke')) {
+            benefits.push("Integrierte Pulversysteme für mehr Vielfalt");
+        }
+
+        // Entferne Duplikate und gib die ersten 3-4 Benefits zurück
+        benefits = [...new Set(benefits)].slice(0, 4);
+
+        return { kategorie, benefits };
+    }
+
+    // Zeigt den Final Screen an
+    function showFinalScreen() {
+        const { kategorie, benefits } = getRecommendation();
+
+        document.getElementById('progress-bar').textContent = `Level 6/6 - Erfolg!`;
+        
+        document.getElementById('recommendation-header').textContent = `Ihre Empfehlung: ${kategorie}`;
+        document.getElementById('recommendation-text').innerHTML = 
+            `<p>Basierend auf Ihren Anforderungen (Branche: **${gameState.data.Level1}**, Tassenbedarf: **${gameState.data.Level4}**) empfehlen wir Ihnen die **${kategorie}**.</p>` +
+            '<h4>Ihre Vorteile:</h4>' +
+            '<ul>' + benefits.map(b => `<li>${b}</li>`).join('') + '</ul>';
+
+        document.getElementById('final-screen').style.display = 'block';
+    }
+
+    // Behandlung des Lead-Formulars (POST an Mock-Webhook / Datenspeicherung)
+    document.getElementById('lead-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        
+        // 1. Daten sammeln (Antworten + Kontaktdaten)
+        const contactData = {
+            firmenname: form.firmenname.value,
+            vorname: form.vorname.value,
+            nachname: form.nachname.value,
+            email: form.email.value,
+            telefon: form.telefon.value
+        };
+
+        const finalData = {
+            ...gameState.data,
+            ...contactData,
+            Maschinenempfehlung: document.getElementById('recommendation-header').textContent.replace('Ihre Empfehlung: ', '')
+        };
+
+        // 2. Speicherung der Daten (Mock-Webhook / JSON-Ausgabe in Konsole)
+        // Im echten Einsatz: Fetch-API für POST an einen Webhook (z.B. Zapier, Make, oder CRM)
+        console.log('--- Gesammelte Lead-Daten (JSON-Mock-Speicherung) ---');
+        console.log(JSON.stringify(finalData, null, 2));
+        console.log('----------------------------------------------------');
+        
+        // 3. Feedback für den Nutzer
+        document.getElementById('form-status').textContent = '✅ Daten gesendet! Wir werden uns in Kürze mit Ihrem individuellen Angebot bei Ihnen melden.';
+        form.querySelector('.submit-btn').disabled = true;
+        
+        // Im echten Einsatz: Weiterleitung zur Danke-Seite
+    });
+
+    // Startet die Experience
+    showLevel(gameState.currentLevel);
+
+</script>
+</body>
+</html>
