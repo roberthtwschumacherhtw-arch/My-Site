@@ -1,509 +1,205 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Demo: Chatbot & Spiel zur Leadgenerierung" />
-  <title>Chatbot Demo | Lead Generation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOIT Support Bot</title>
 
   <style>
-    :root {
-      --bg: #FFFDFA;
-      --accent-bg: #F6EADC;
-      --text: #331E00;
-      --button-bg: #331E00;
-      --button-hover: #5A3600;
-    }
-    * { box-sizing: border-box; margin:0; padding:0; }
     body {
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
-    header {
-      width:100%;
-      background: var(--accent-bg);
-      padding: 1rem 2rem;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      box-shadow: 0 4px 12px rgba(51,30,0,0.1);
-    }
-    header h1 {
-      font-size: 1.8rem;
-      color: var(--text);
-    }
-    nav a {
-      color: var(--text);
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-    nav a:hover {
-      color: var(--button-hover);
-    }
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: var(--text);
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      color: var(--text);
-      max-width: 700px;
-      margin-left:auto;
-      margin-right:auto;
-    }
-    .buttons {
-      display:flex;
-      justify-content:center;
-      gap:1rem;
-      flex-wrap: wrap;
-    }
-    .button {
-      background: var(--button-bg);
-      color: #fff;
-      padding: 14px 28px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .button:hover {
-      background: var(--button-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(51,30,0,0.2);
-    }
-    .features {
-      display: grid;
-      gap: 2rem;
-      max-width: 900px;
-      margin: 3rem auto;
-      padding: 0 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-    }
-    .feature {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(51,30,0,0.05);
-      text-align: center;
-    }
-    .feature h3 {
-      margin-bottom: 0.75rem;
-      font-size: 1.4rem;
-      color: var(--text);
-    }
-    .feature p {
-      font-size: 1rem;
-      color: var(--text);
-    }
-    footer {
-      background: var(--accent-bg);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      color: rgba(51,30,0,0.7);
-      font-size: 0.9rem;
+      font-family: Arial, sans-serif;
     }
 
-    /* === Chat-Widget === */
     #chat-toggle {
       position: fixed;
       bottom: 20px;
       right: 20px;
+      background: #007bff;
+      color: white;
+      border-radius: 50%;
       width: 60px;
       height: 60px;
-      border-radius: 50%;
-      border: none;
+      font-size: 30px;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(51,30,0,0.35);
-      font-size: 26px;
-      background: var(--button-bg);
-      color: #fff;
-      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-    #chat-toggle:hover {
-      background: var(--button-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(51,30,0,0.45);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 999;
     }
 
     #chat-window {
       position: fixed;
-      bottom: 90px;
+      bottom: 100px;
       right: 20px;
-      width: 340px;
-      max-height: 520px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 22px 45px rgba(51,30,0,0.45);
+      width: 350px;
+      height: 450px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
       display: none;
       flex-direction: column;
-      overflow: hidden;
-      z-index: 9999;
-      border: 1px solid rgba(51,30,0,0.15);
+      z-index: 1000;
     }
 
     #chat-header {
-      padding: 10px 12px;
-      background: var(--button-bg);
-      color: #fff;
-      font-weight: 500;
+      background: #007bff;
+      color: white;
+      padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.9rem;
-    }
-
-    #chat-header span {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    #chat-header-status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 6px #22c55e;
+      border-radius: 10px 10px 0 0;
     }
 
     #chat-messages {
-      padding: 10px;
       flex: 1;
+      padding: 10px;
       overflow-y: auto;
-      font-size: 0.85rem;
-      background: #FFFBF5;
+      font-size: 14px;
     }
 
-    .msg {
+    .bot-message {
+      background: #e7f1ff;
+      padding: 8px;
+      border-radius: 5px;
       margin-bottom: 8px;
-      max-width: 80%;
-      padding: 7px 9px;
-      border-radius: 10px;
-      clear: both;
-      line-height: 1.4;
-      word-wrap: break-word;
-      font-size: 0.8rem;
     }
 
-    .msg.user {
-      background: var(--button-bg);
-      color: #fff;
-      margin-left: auto;
-      border-bottom-right-radius: 3px;
-    }
-
-    .msg.bot {
-      background: #fff;
-      color: var(--text);
-      margin-right: auto;
-      border-bottom-left-radius: 3px;
-      border: 1px solid rgba(51,30,0,0.15);
+    .user-message {
+      background: #d1ffd1;
+      padding: 8px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      text-align: right;
     }
 
     #chat-input-area {
+      padding: 10px;
       display: flex;
-      border-top: 1px solid rgba(51,30,0,0.15);
-      background: #FFF7EC;
+      gap: 5px;
     }
 
     #chat-input {
       flex: 1;
-      border: none;
       padding: 8px;
-      font-size: 0.85rem;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-    }
-
-    #chat-input::placeholder {
-      color: rgba(51,30,0,0.55);
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     #chat-send {
+      padding: 8px 12px;
+      background: #007bff;
+      color: white;
       border: none;
-      padding: 0 12px;
+      border-radius: 5px;
       cursor: pointer;
-      background: transparent;
-      color: var(--button-bg);
-      font-weight: 500;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    #chat-send:hover {
-      color: var(--button-hover);
-    }
-
-    #chat-send span {
-      display: inline-block;
-      transform: translateY(1px);
     }
 
     #chat-error {
-      font-size: 0.75rem;
-      color: #B91C1C;
-      padding: 4px 8px 6px;
-      border-top: 1px solid rgba(185,28,28,0.2);
-      background: #FEF2F2;
+      color: red;
+      font-size: 12px;
+      padding: 0 10px 10px;
       display: none;
-    }
-
-    .typing {
-      opacity: 0.8;
-      font-style: italic;
-      font-size: 0.8rem;
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <h1>LeadGen Chatbot Demo</h1>
-  <nav>
-    <a href="game.html">Game V1</a>
-    <a href="game2.html">Game V2</a>
-  </nav>
-</header>
+  <div id="chat-toggle">💬</div>
 
-<section class="hero">
-  <h2>Entdecken Sie unseren interaktiven Chatbot &amp; Game zur Leadgenerierung</h2>
-  <p>Erleben Sie, wie Besucher spielerisch eingebunden werden und wie der Chatbot automatisiert Leads generiert – klar, modern, ansprechend.</p>
-  <div class="buttons">
-    <a class="button" href="game.html">Spiel starten</a>
+  <div id="chat-window">
+    <div id="chat-header">
+      <span>BOIT Support Bot</span>
+      <span id="chat-close" style="cursor:pointer;">✖</span>
+    </div>
+
+    <div id="chat-messages"></div>
+
+    <div id="chat-error"></div>
+
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Nachricht eingeben..." />
+      <button id="chat-send">➤</button>
+    </div>
   </div>
-</section>
 
-<section class="features">
-  <div class="feature">
-    <h3>Interaktive Kommunikation</h3>
-    <p>Der Chatbot spricht Ihre Besucher direkt an, weckt Interesse und leitet zu einer Aktion.</p>
-  </div>
-  <div class="feature">
-    <h3>Spielerische Leadgenerierung</h3>
-    <p>Ein unterhaltsames Game animiert zur Teilnahme und liefert wertvolle Kontaktdaten.</p>
-  </div>
-  <div class="feature">
-    <h3>Hochwertiges Design</h3>
-    <p>Konzipiert nach modernen Standards – analog zum Stil von Premiummarken im Web.</p>
-  </div>
-</section>
+  <script>
+    // *** WICHTIG: DEINE KORREKTE TUNNEL-URL ***
+    const BACKEND_URL = "https://bot.boit.website/chat";
 
-<footer>
-  © 2025 LeadGen Demo — Für interne Präsentation.
-</footer>
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const chatClose = document.getElementById('chat-close');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+    const chatError = document.getElementById('chat-error');
 
-<!-- 🔹 Eigenes Chat-Widget (lokale KI via Cloudflare Tunnel) -->
-<button id="chat-toggle" title="Mit dem Demo-Chatbot sprechen">
-  💬
-</button>
+    let chatState = {};
+    let isSending = false;
 
-<div id="chat-window">
-  <div id="chat-header">
-    <span>
-      <span id="chat-header-status-dot"></span>
-      <span>LeadGen KI-Chat</span>
-    </span>
-    <button id="chat-close" style="border:none;background:transparent;color:#fff;cursor:pointer;font-size:1rem;">✖</button>
-  </div>
-  <div id="chat-messages"></div>
-  <div id="chat-error"></div>
-  <div id="chat-input-area">
-    <input id="chat-input" type="text" placeholder="Stellen Sie eine Frage zur Demo ..." />
-    <button id="chat-send">
-      <span>➤</span>
-    </button>
-  </div>
-</div>
+    chatToggle.onclick = () => {
+      chatWindow.style.display = 'flex';
+    };
 
-<script>
-  // Cloudflare-Tunnel-URL zu deinem Node-/Ollama-Backend
-  const BACKEND_URL = 'const BACKEND_URL = "https://bot.boit.website/chat";';
+    chatClose.onclick = () => {
+      chatWindow.style.display = 'none';
+    };
 
-  const chatToggle = document.getElementById('chat-toggle');
-  const chatWindow = document.getElementById('chat-window');
-  const chatClose = document.getElementById('chat-close');
-  const chatMessages = document.getElementById('chat-messages');
-  const chatInput = document.getElementById('chat-input');
-  const chatSend = document.getElementById('chat-send');
-  const chatError = document.getElementById('chat-error');
-
-  let isSending = false;
-  let chatState = {};  // 👈 Startet leer, Server setzt dann GREETING
-
-  function addMessage(text, sender, extraClass = '') {
-    const div = document.createElement('div');
-    div.classList.add('msg', sender);
-    if (extraClass) div.classList.add(extraClass);
-    div.textContent = text;
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    return div;
-  }
-
-  function setError(message) {
-    if (!message) {
-      chatError.style.display = 'none';
-      chatError.textContent = '';
-    } else {
-      chatError.style.display = 'block';
-      chatError.textContent = message;
-    }
-  }
-
-  // 👇 NEU: Initialer Call für Begrüßung, OHNE User-Eingabe
-  async function initChat() {
-    // Wenn schon ein State existiert (z.B. Chat schon gestartet), nichts tun
-    if (chatState && chatState.stage) return;
-
-    setError('');
-    const typingMsg = addMessage('Verbinde …', 'bot', 'typing');
-
-    try {
-      const response = await fetch(BACKEND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          // kein "prompt": Server erkennt stage=GREETING automatisch
-          state: chatState
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Server-Fehler:', errorText);
-        setError('Serverfehler (' + response.status + '). Prüfen Sie, ob Bot-Server & Tunnel laufen.');
-        typingMsg.remove();
-        return;
-      }
-
-      const data = await response.json();
-      typingMsg.remove();
-
-      if (data.reply) {
-        addMessage(data.reply, 'bot');
-      } else {
-        addMessage('Keine Antwort vom Server erhalten.', 'bot');
-      }
-
-      if (data.state) {
-        chatState = data.state;
-        console.log('📌 Initialer State:', chatState);
-      }
-    } catch (err) {
-      console.error(err);
-      typingMsg.remove();
-      setError('Verbindungsfehler: Der Tunnel oder der Bot-Server scheint offline zu sein.');
-      addMessage('Ich konnte den Server nicht erreichen. Bitte später erneut versuchen.', 'bot');
-    }
-  }
-
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text || isSending) return;
-
-    setError('');
-    chatInput.value = '';
-    isSending = true;
-
-    addMessage(text, 'user');
-    const typingMsg = addMessage('Denke nach …', 'bot', 'typing');
-
-    try {
-      const response = await fetch(BACKEND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: text,
-          state: chatState   // alten State mitsenden
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Server-Fehler:', errorText);
-        setError('Serverfehler (' + response.status + '). Prüfen Sie, ob Bot-Server & Tunnel laufen.');
-        typingMsg.remove();
-        isSending = false;
-        return;
-      }
-
-      const data = await response.json();
-      typingMsg.remove();
-
-      if (data.reply) {
-        addMessage(data.reply, 'bot');
-      } else {
-        addMessage('Keine Antwort vom Server erhalten.', 'bot');
-      }
-
-      if (data.state) {
-        chatState = data.state;
-        console.log('📌 Neuer State:', chatState);
-      }
-    } catch (err) {
-      console.error(err);
-      typingMsg.remove();
-      setError('Verbindungsfehler: Der Tunnel oder der Bot-Server scheint offline zu sein.');
-      addMessage('Ich konnte den Server nicht erreichen. Bitte später erneut versuchen.', 'bot');
-    } finally {
-      isSending = false;
+    function addMessage(text, sender = 'bot') {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = sender === 'user' ? 'user-message' : 'bot-message';
+      messageDiv.innerHTML = text;
+      chatMessages.appendChild(messageDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-  }
 
-  // Widget-Steuerung
-  chatToggle.addEventListener('click', () => {
-    chatWindow.style.display = 'flex';
+    async function sendMessage() {
+      if (isSending) return;
 
-    // 👇 Beim ersten Öffnen direkt Begrüßung holen
-    initChat();
-  });
+      const text = chatInput.value.trim();
+      if (!text) return;
 
-  chatClose.addEventListener('click', () => {
-    chatWindow.style.display = 'none';
-  });
+      addMessage(text, 'user');
+      chatInput.value = '';
+      isSending = true;
+      chatError.style.display = 'none';
 
-  chatSend.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
-</script>
+      try {
+        const response = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: text,
+            state: chatState
+          }),
+        });
 
+        if (!response.ok) {
+          throw new Error("HTTP-Fehler: " + response.status);
+        }
 
-<!-- Google Tag Manager (unverändert) -->
-<script>
-  (function(w,d,s,l,i){
-    w[l]=w[l]||[];
-    w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-    var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-    j.async=true;
-    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-    f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-XXXXXXX');
-</script>
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
+        const data = await response.json();
+
+        chatState = data.state || {};
+        addMessage(data.reply || "Keine Antwort erhalten.");
+
+      } catch (error) {
+        chatError.innerText = "Serverfehler: Verbindung fehlgeschlagen.";
+        chatError.style.display = 'block';
+        console.error(error);
+      }
+
+      isSending = false;
+    }
+
+    chatSend.onclick = sendMessage;
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
 
 </body>
 </html>
-
