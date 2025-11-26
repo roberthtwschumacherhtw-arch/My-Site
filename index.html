@@ -334,9 +334,7 @@
 
 <script>
   // Cloudflare-Tunnel-URL zu deinem Node-/Ollama-Backend
-const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/chat';
-
-
+  const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/chat';
 
   const chatToggle = document.getElementById('chat-toggle');
   const chatWindow = document.getElementById('chat-window');
@@ -347,7 +345,7 @@ const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/c
   const chatError = document.getElementById('chat-error');
 
   let isSending = false;
-  let chatState = null;  // 👈 Merkt sich den aktuellen Bot-Zustand (Stage, Daten etc.)
+  let chatState = {};  // 👈 Startet leer, Server setzt dann GREETING
 
   function addMessage(text, sender, extraClass = '') {
     const div = document.createElement('div');
@@ -369,6 +367,53 @@ const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/c
     }
   }
 
+  // 👇 NEU: Initialer Call für Begrüßung, OHNE User-Eingabe
+  async function initChat() {
+    // Wenn schon ein State existiert (z.B. Chat schon gestartet), nichts tun
+    if (chatState && chatState.stage) return;
+
+    setError('');
+    const typingMsg = addMessage('Verbinde …', 'bot', 'typing');
+
+    try {
+      const response = await fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          // kein "prompt": Server erkennt stage=GREETING automatisch
+          state: chatState
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server-Fehler:', errorText);
+        setError('Serverfehler (' + response.status + '). Prüfen Sie, ob Bot-Server & Tunnel laufen.');
+        typingMsg.remove();
+        return;
+      }
+
+      const data = await response.json();
+      typingMsg.remove();
+
+      if (data.reply) {
+        addMessage(data.reply, 'bot');
+      } else {
+        addMessage('Keine Antwort vom Server erhalten.', 'bot');
+      }
+
+      if (data.state) {
+        chatState = data.state;
+        console.log('📌 Initialer State:', chatState);
+      }
+    } catch (err) {
+      console.error(err);
+      typingMsg.remove();
+      setError('Verbindungsfehler: Der Tunnel oder der Bot-Server scheint offline zu sein.');
+      addMessage('Ich konnte den Server nicht erreichen. Bitte später erneut versuchen.', 'bot');
+    }
+  }
+
   async function sendMessage() {
     const text = chatInput.value.trim();
     if (!text || isSending) return;
@@ -386,7 +431,7 @@ const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/c
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: text,
-          state: chatState   // 👈 alten State mitsenden
+          state: chatState   // alten State mitsenden
         })
       });
 
@@ -402,19 +447,16 @@ const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/c
       const data = await response.json();
       typingMsg.remove();
 
-      // Bot-Antwort anzeigen
       if (data.reply) {
         addMessage(data.reply, 'bot');
       } else {
         addMessage('Keine Antwort vom Server erhalten.', 'bot');
       }
 
-      // 👇 NEU: State speichern
       if (data.state) {
         chatState = data.state;
-        console.log("📌 Neuer State:", chatState);
+        console.log('📌 Neuer State:', chatState);
       }
-
     } catch (err) {
       console.error(err);
       typingMsg.remove();
@@ -430,10 +472,8 @@ const BACKEND_URL = 'https://thinkpad-ftp-locator-technician.trycloudflare.com/c
   chatToggle.addEventListener('click', () => {
     chatWindow.style.display = 'flex';
 
-    // 👇 Optional: Wenn der Chat neu geöffnet wird → will der Bot begrüßen
-    if (!chatState) {
-      sendMessage("Hi");
-    }
+    // 👇 Beim ersten Öffnen direkt Begrüßung holen
+    initChat();
   });
 
   chatClose.addEventListener('click', () => {
