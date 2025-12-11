@@ -33,11 +33,10 @@
       text-decoration: none;
     }
 
-    /* NEU: Hilfsklasse für das Logo-Bild - HIER WAR DIE ÄNDERUNG */
+    /* Hilfsklasse für das Logo-Bild (Allgemein) */
     .logo-img {
       width: 100%;
       height: 100%;
-      /* 'contain' sorgt dafür, dass das ganze Bild sichtbar ist */
       object-fit: contain;
       display: block;
     }
@@ -59,7 +58,6 @@
       z-index: 50;
     }
     
-    /* Fix: Header-Schriftfarbe besser lesbar machen */
     header .nav,
     header .nav * {
       color: var(--jde-brown) !important;
@@ -81,19 +79,19 @@
       gap: 0.75rem;
     }
 
-    /* Anpassung für das Logo im Header */
+    /* Logo im Haupt-Header */
     .logo-circle {
-      width: 42px;  /* Etwas größer für das Bild */
+      width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: transparent; /* Kein Hintergrund mehr nötig */
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
       font-size: 1.1rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-      overflow: hidden; /* Wichtig: Schneidet die Ecken des JPGs rund ab */
+      overflow: hidden;
     }
 
     .brand-text {
@@ -476,7 +474,7 @@
       background: var(--jde-brown);
       color: var(--jde-offwhite);
       border-radius: 50%; /* Rund machen */
-      width: 70px; /* Etwas größer für das Logo */
+      width: 70px;
       height: 70px;
       cursor: pointer;
       display: flex;
@@ -484,8 +482,8 @@
       justify-content: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       z-index: 999;
-      padding: 0; /* Padding weg, damit Bild füllt */
-      overflow: hidden; /* Ecken abschneiden für JPG */
+      padding: 0;
+      overflow: hidden;
       transition: transform 0.2s ease;
     }
     
@@ -523,6 +521,26 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    /* NEU: Kleines Logo im Chat-Header */
+    .chat-header-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #fff; /* Damit das Bild gut lesbar ist */
+      border: 2px solid rgba(255,255,255,0.2);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .chat-header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     #chat-header-title {
@@ -641,7 +659,7 @@
       <div class="nav-links">
         <a href="#top" class="nav-link">Start</a>
         <a href="#bot" class="nav-link">Service-Bot</a>
-        <a href="gamedesign.html" class="nav-link">Coffee Game</a>
+        <a href="game.html" class="nav-link">Coffee Game</a>
         <button class="nav-cta" id="nav-chat-open">
           <span>Chat starten</span>
           <span>💬</span>
@@ -674,7 +692,7 @@
             <span>Jetzt mit dem Support Bot chatten</span>
           </button>
 
-          <a href="gamedesign.html" class="btn-secondary">
+          <a href="game.html" class="btn-secondary">
             <span class="icon">🎮</span>
             <span>Zum Coffee Game</span>
           </a>
@@ -801,9 +819,14 @@
 
 <div id="chat-window" aria-label="Support-Chat">
   <div id="chat-header">
-    <div id="chat-header-title">
-      <span>BOIT Support Bot</span>
-      <span>Jacobs Professional Service-Assistent</span>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="chat-header-logo">
+        <img src="grafik.jpg" alt="Bot Logo">
+      </div>
+      <div id="chat-header-title">
+        <span>BOIT Support Bot</span>
+        <span>Jacobs Professional Service-Assistent</span>
+      </div>
     </div>
     <span id="chat-close">✖</span>
   </div>
