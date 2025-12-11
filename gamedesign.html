@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kaffeemaschinen-Berater | JDE Professional</title>
+  <style>
+    :root {
+      /* JDE Corporate Colors */
+      --jde-brown: #331E00;
+      --jde-cream: #F6EADC;
+      --jde-offwhite: #FFFDFA;
+      
+      /* Semantic Variables */
+      --bg-gradient: radial-gradient(circle at top left, #F6EADC 0, #FFFDFA 40%, #ffffff 100%);
+      --card-bg: var(--jde-offwhite);
+      --text-main: var(--jde-brown);
+      --text-muted: rgba(51, 30, 0, 0.7);
+      --border-color: rgba(51, 30, 0, 0.15);
+      --primary: var(--jde-brown);
+      --primary-hover: #4a2c00;
+      --accent-selection: var(--jde-cream);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px; /* Etwas schmaler für besseren Fokus */
+      margin: 0 auto;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    /* Card Styling wie auf der Hauptseite */
+    .card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 18px 40px rgba(51, 30, 0, 0.08);
+      border: 1px solid var(--border-color);
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 32px);
+      margin: 8px 0;
+      font-weight: 700;
+      color: var(--jde-brown);
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 8px 0;
+      font-weight: 600;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.cols-3 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    /* Interactive Buttons */
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      background: #fff;
+      color: var(--text-main);
+      box-shadow: 0 4px 12px rgba(51, 30, 0, 0.03);
+      transition: all 0.2s ease;
+      font-size: 1rem;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-3px);
+      border-color: var(--jde-brown);
+      box-shadow: 0 8px 20px rgba(51, 30, 0, 0.1);
+    }
+
+    /* Icons */
+    .icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      background: var(--jde-brown);
+      color: var(--jde-offwhite);
+      font-size: 24px;
+      box-shadow: 0 4px 10px rgba(51, 30, 0, 0.2);
+    }
+
+    .small {
+      font-size: 13px;
+    }
+
+    /* Badge / Pill */
+    .pill {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--jde-brown);
+      color: var(--jde-offwhite);
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Action Buttons Area */
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    /* Primary Button (JDE Brown) */
+    .btn-primary {
+      background: var(--primary);
+      color: var(--jde-offwhite);
+      padding: 14px 24px;
+      border-radius: 999px; /* Pill Shape */
+      border: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Ghost/Secondary Button */
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-main);
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      font-weight: 500;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--jde-brown);
+      background: rgba(246, 234, 220, 0.3); /* Slight cream tint */
+    }
+
+    .btn-disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      cursor: not-allowed;
+      border-color: transparent;
+      box-shadow: none;
+    }
+    
+    .btn-disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Results */
+    .benefit {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #3ABF4A; /* Ein frisches Grün für Success passt gut */
+      color: white;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Formular */
+    form .field {
+      margin-bottom: 16px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: #fff;
+      font-family: inherit;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--jde-brown);
+      box-shadow: 0 0 0 3px rgba(51, 30, 0, 0.08);
+    }
+
+    footer {
+      margin-top: 32px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    
+    /* Logo Integration for Header */
+    .logo-container {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 10px;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(51,30,0,0.15);
+    }
+    .logo-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 20px; border-radius: 20px; }
+      h1 { font-size: 26px; }
+      .icon-circle { width: 56px; height: 56px; }
+      .actions { flex-direction: column; }
+      .actions button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="app" class="card">
+      </div>
+    <footer>© 2025 Jacobs Professional – Kaffeemaschinen-Berater Demo</footer>
+  </div>
+
+  <script>
+  // --- Data & helpers ---
+  const app = document.getElementById('app');
+
+  // Colors updated to fit JDE Corporate Design (Brown/Gold/Neutrals) 
+  // We use CSS variables mainly, but keep these for inline styles if needed
+  const branchen = [
+    { id: 'buero', name: 'Büro', color: '#331E00', icon: '🏢' }, // JDE Brown
+    { id: 'gastronomie', name: 'Gastronomie', color: '#C89A4B', icon: '🍽️' }, // Gold Accent
+    { id: 'hotel', name: 'Hotel', color: '#5A3A15', icon: '🏨' }, // Lighter Brown
+    { id: 'produktion', name: 'Produktion', color: '#6b7280', icon: '🏭' }, // Grey (Standard)
+    { id: 'bildung', name: 'Bildung', color: '#331E00', icon: '🎓' },
+    { id: 'health', name: 'Health & Care', color: '#C89A4B', icon: '❤️' }
+  ];
+
+  const mitarbeiterGroessen = [
+    { id: 'bis10', label: 'Bis 10 Mitarbeiter', value: 'bis10' },
+    { id: '11-50', label: '11–50 Mitarbeiter', value: '11-50' },
+    { id: '51-200', label: '51–200 Mitarbeiter', value: '51-200' },
+    { id: 'ueber200', label: 'Über 200 Mitarbeiter', value: 'ueber200' }
+  ];
+
+  const getraenkeOptionen = [
+    { id: 'kaffee', label: 'Kaffee (Schwarz)', icon: '☕' },
+    { id: 'cappuccino', label: 'Milchspezialitäten', icon: '🥛' },
+    { id: 'tee', label: 'Heißwasser / Tee', icon: '🍵' },
+    { id: 'kakao', label: 'Kakao', icon: '🍫' }
+  ];
+
+  // application state
+  let state = {
+    level: 1,
+    branche: '',
+    einsatzart: '',
+    kundentyp: '',
+    mitarbeiter: '',
+    getraenke: [],
+    festwasser: '',
+    showForm: false,
+    form: { firma:'', ansprechpartner:'', email:'', telefon:'', nachricht:'' }
+  };
+
+  function render(){
+    app.innerHTML = '';
+    window.scrollTo(0,0); // Scroll to top on render
+    if(state.level === -1){ return renderEventAbort(); }
+    if(state.level === -2){ return renderPrivateAbort(); }
+    if(state.level === 1){ return renderBranchenwahl(); }
+    if(state.level === 2){ return renderEinsatzart(); }
+    if(state.level === 3){ return renderKundentyp(); }
+    if(state.level === 4){ return renderMitarbeiter(); }
+    if(state.level === 5){ return renderGetraenke(); }
+    if(state.level === 6 && !state.showForm){ return renderEmpfehlung(); }
+    if(state.showForm){ return renderForm(); }
+    
+    app.innerHTML = '<p class="center muted">Etwas ist schiefgelaufen — bitte Seite neu laden.</p>';
+  }
+
+  // --- Render functions ---
+  function renderBranchenwahl(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center">
+        <div class="logo-container"><img src="grafik.jpg" alt="JDE Logo"></div>
+        <h1>Kaffeemaschinen-Berater</h1>
+        <p class="muted">Finden Sie die perfekte Kaffeelösung für Ihr Unternehmen.</p>
+        <div class="pill">Schritt 1 von 6</div>
+      </header>
+      <section>
+        <h2 class="center">In welcher Branche sind Sie tätig?</h2>
+        <div class="grid cols-3" id="branchen-grid" style="margin-top:24px;"></div>
+      </section>
+      <div class="actions center" style="justify-content:center">
+         <a href="index.html" class="btn-ghost" style="text-decoration:none; text-align:center;">← Zurück zur Startseite</a>
+      </div>
+    `;
+    app.appendChild(container);
+    const grid = container.querySelector('#branchen-grid');
+    branchen.forEach(b => {
+      const btn = document.createElement('button');
+      // Using CSS variable for background consistency
+      btn.innerHTML = `
+        <div class="icon-circle" style="background:${b.color};">
+          <div style="font-size:24px">${b.icon}</div>
+        </div>
+        <strong style="display:block;text-align:center">${b.name}</strong>
+      `;
+      btn.addEventListener('click', () => { state.branche = b.id; state.level = 2; render(); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function renderEinsatzart(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Schritt 2 von 6</div>
+        <h2>Wie möchten Sie die Maschine nutzen?</h2>
+      </header>
+      <div class="grid" style="margin-top:24px">
+        <button id="dauerhaft">
+          <div style="font-size:24px;margin-bottom:8px">🏢</div>
+          <strong>Dauerhafter Einsatz</strong>
+          <div class="muted small">Tägliche Versorgung im Betrieb</div>
+        </button>
+        <button id="event">
+          <div style="font-size:24px;margin-bottom:8px">🎉</div>
+          <strong>Einmaliges Event</strong>
+          <div class="muted small">Kurzzeitmiete für Veranstaltungen</div>
+        </button>
+      </div>
+      <div class="actions"><button class="btn-ghost" id="back">← Zurück</button></div>
+    `;
+    app.appendChild(container);
+    container.querySelector('#dauerhaft').addEventListener('click', () => { state.einsatzart = 'dauerhaft'; state.level = 3; render(); });
+    container.querySelector('#event').addEventListener('click', () => { state.einsatzart = 'event'; state.level = -1; render(); });
+    container.querySelector('#back').addEventListener('click', () => { state.level = 1; render(); });
+  }
+
+  function renderKundentyp(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Schritt 3 von 6</div>
+        <h2>Für wen ist die Maschine?</h2>
+      </header>
+      <div class="grid" style="margin-top:24px">
+        <button id="gewerblich">
+           <div style="font-size:24px;margin-bottom:8px">💼</div>
+           <strong>Gewerbliche Nutzung</strong>
+           <div class="muted small">Für Büros, Gastronomie, Health & Care</div>
+        </button>
+        <button id="privat">
+           <div style="font-size:24px;margin-bottom:8px">🏠</div>
+           <strong>Private Nutzung</strong>
+           <div class="muted small">Für den Haushalt</div>
+        </button>
+      </div>
+      <div class="actions"><button class="btn-ghost" id="back">← Zurück</button></div>
+    `;
+    app.appendChild(container);
+    container.querySelector('#gewerblich').addEventListener('click', () => { state.kundentyp = 'gewerblich'; state.level = 4; render(); });
+    container.querySelector('#privat').addEventListener('click', () => { state.kundentyp = 'privat'; state.level = -2; render(); });
+    container.querySelector('#back').addEventListener('click', () => { state.level = 2; render(); });
+  }
+
+  function renderMitarbeiter(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Schritt 4 von 6</div>
+        <h2>Wie viele Mitarbeiter / Gäste versorgen Sie täglich?</h2>
+      </header>
+      <div class="grid cols-3" id="mitarbeiter-grid" style="margin-top:24px"></div>
+      <div class="actions"><button class="btn-ghost" id="back">← Zurück</button></div>
+    `;
+    app.appendChild(container);
+    const grid = container.querySelector('#mitarbeiter-grid');
+    mitarbeiterGroessen.forEach(g => {
+      const btn = document.createElement('button');
+      btn.innerHTML = `
+        <div style="font-size:24px;margin-bottom:8px; color:var(--jde-brown);">👥</div>
+        <strong style="display:block;text-align:center">${g.label}</strong>
+      `;
+      btn.addEventListener('click', () => { state.mitarbeiter = g.value; state.level = 5; render(); });
+      grid.appendChild(btn);
+    });
+    container.querySelector('#back').addEventListener('click', () => { state.level = 3; render(); });
+  }
+
+  function renderGetraenke(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Schritt 5 von 6</div>
+        <h2>Welche Getränkevielfalt wünschen Sie?</h2>
+        <p class="muted">Mehrfachauswahl möglich</p>
+      </header>
+      <div class="grid cols-3" id="getraenke-grid" style="margin-top:24px"></div>
+      <div style="margin-top:24px; text-align:center;">
+        <button id="weiter" class="btn-primary btn-disabled">Weiter zum letzten Schritt</button>
+      </div>
+      <div class="actions"><button class="btn-ghost" id="back">← Zurück</button></div>
+    `;
+    app.appendChild(container);
+    const grid = container.querySelector('#getraenke-grid');
+    getraenkeOptionen.forEach(g => {
+      const btn = document.createElement('button');
+      btn.setAttribute('data-id', g.id);
+      updateGetraenkButton(btn, g);
+      btn.addEventListener('click', () => {
+        toggleGetraenk(g.id);
+        updateGetraenkButton(btn, g);
+        updateWeiterButton();
+      });
+      grid.appendChild(btn);
+    });
+    
+    function updateWeiterButton(){
+      const weiter = container.querySelector('#weiter');
+      if(state.getraenke.length > 0){ 
+          weiter.classList.remove('btn-disabled'); 
+          weiter.disabled=false; 
+      } else { 
+          weiter.classList.add('btn-disabled'); 
+          weiter.disabled=true; 
+      }
+    }
+
+    function updateGetraenkButton(btn,g){
+      const selected = state.getraenke.includes(g.id);
+      // HIER ANGEPASST: Nutze JDE Cream (#F6EADC) als Hintergrund statt Pink
+      const bg = selected ? 'var(--jde-cream)' : '#fff';
+      const border = selected ? '2px solid var(--jde-brown)' : '1px solid var(--border-color)';
+      
+      btn.style.background = bg;
+      btn.style.border = border;
+      
+      btn.innerHTML = `
+        <div style="font-size:26px;margin-bottom:8px">${g.icon}</div>
+        <strong>${g.label}</strong>
+        ${selected ? '<div style="margin-top:8px; color:var(--jde-brown); font-weight:bold;" class="small">Ausgewählt ✓</div>' : ''}
+      `;
+    }
+    
+    function toggleGetraenk(id){
+      const idx = state.getraenke.indexOf(id);
+      if(idx >= 0) state.getraenke.splice(idx,1);
+      else state.getraenke.push(id);
+    }
+    
+    container.querySelector('#weiter').addEventListener('click', () => {
+      if(state.getraenke.length === 0) return;
+      renderFestwasserQuestion();
+    });
+    container.querySelector('#back').addEventListener('click', () => { state.level = 4; render(); });
+    updateWeiterButton();
+  }
+
+  function renderFestwasserQuestion(){
+    app.innerHTML = '';
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Schritt 6 von 6</div>
+        <h2>Ist ein Festwasseranschluss möglich?</h2>
+        <p class="muted">Ein Anschluss sorgt für unterbrechungsfreien Betrieb ohne Tanknachfüllen.</p>
+      </header>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:24px">
+        <button id="fest-ja" style="text-align:center">
+            <div style="font-size:24px;margin-bottom:8px">🚰</div>
+            <strong>Ja</strong><br><span class="muted small">Festwasser möglich</span>
+        </button>
+        <button id="fest-nein" style="text-align:center">
+            <div style="font-size:24px;margin-bottom:8px">🍶</div>
+            <strong>Nein</strong><br><span class="muted small">Wassertank benötigt</span>
+        </button>
+      </div>
+      <div class="actions"><button class="btn-ghost" id="back">← Zurück</button></div>
+    `;
+    app.appendChild(container);
+    container.querySelector('#fest-ja').addEventListener('click', () => { state.festwasser = 'ja'; state.level = 6; render(); });
+    container.querySelector('#fest-nein').addEventListener('click', () => { state.festwasser = 'nein'; state.level = 6; render(); });
+    container.querySelector('#back').addEventListener('click', () => { state.level = 5; render(); });
+  }
+
+  function getMaschinenEmpfehlung(){
+    const m = state.mitarbeiter;
+    if(m === 'bis10'){
+      return {
+        name:'Compact Pro 3000',
+        modelle:['Jura GIGA X3','WMF 1100 S','Melitta Cafina XT4'],
+        benefits:[
+          'Ideal für kleine Teams & Meetingräume',
+          'Kompaktes Design, einfacher Betrieb',
+          'Plug & Play mit Wassertank'
+        ]
+      };
+    } else if(m === '11-50'){
+      return {
+        name:'Business Line 5000',
+        modelle:['WMF 1500 S+','Schaerer Coffee Art','Jura X8'],
+        benefits:[
+          'Hohe Leistung für den Dauerbetrieb',
+          'Perfekter Milchschaum auf Knopfdruck',
+          'Optional mit Zahlungssystemen'
+        ]
+      };
+    } else if(m === '51-200'){
+      return {
+        name:'Professional XL 8000',
+        modelle:['Franke A800','WMF 9000 S+','Schaerer Soul'],
+        benefits:[
+          'Maximale Geschwindigkeit bei Spitzenlast',
+          'Parallelausgabe von Kaffee & Heißwasser',
+          'Große Bohnenbehälter & Satzabwurf'
+        ]
+      };
+    } else {
+      return {
+        name:'Industrial Power 10000',
+        modelle:['Franke SB1200','WMF 5000 S+','Schaerer Prime'],
+        benefits:[
+          'Industriestandard für Kantinen',
+          'Hygienisch & Wartungsarm',
+          'Full-Service-Support inklusive'
+        ]
+      };
+    }
+  }
+
+  function renderEmpfehlung(){
+    const empfehlung = getMaschinenEmpfehlung();
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center">
+        <div style="font-size:48px; margin-bottom:10px">🏆</div>
+        <h1 style="color:var(--jde-brown)">Unsere Empfehlung</h1>
+        <div class="pill" style="font-size:1rem; background:var(--jde-cream); color:var(--jde-brown)">${empfehlung.name}</div>
+      </header>
+
+      <div style="margin-top:24px; padding:20px; background:#fff; border-radius:16px; border:1px solid var(--border-color);">
+        <h2 style="margin-top:0">Passende Modelle</h2>
+        <div id="models" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px"></div>
+
+        <h2 style="margin-top:24px">Ihre Vorteile</h2>
+        <div id="benefits" style="margin-top:12px"></div>
+      </div>
+
+      <div style="margin-top:24px" class="center">
+        <h3>Interessiert?</h3>
+        <p class="muted">Fordern Sie jetzt Ihr unverbindliches Angebot an.</p>
+        <div class="actions center" style="justify-content:center;margin-top:16px">
+          <button id="open-form" class="btn-primary">Kostenloses Angebot anfordern</button>
+          <button id="new" class="btn-ghost">Neu starten</button>
+        </div>
+      </div>
+    `;
+    app.appendChild(container);
+    const modelsDiv = container.querySelector('#models');
+    empfehlung.modelle.forEach(m => {
+      const d = document.createElement('div');
+      // Mini Cards inside recommendation
+      d.style.cssText = 'padding:12px; background:var(--jde-offwhite); border:1px solid var(--border-color); border-radius:12px; min-width:140px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.05)';
+      d.innerHTML = `<div style="font-size:24px">☕</div><strong style="display:block;margin-top:4px;font-size:0.9rem">${m}</strong>`;
+      modelsDiv.appendChild(d);
+    });
+    const benefitsDiv = container.querySelector('#benefits');
+    empfehlung.benefits.forEach(b => {
+      const d = document.createElement('div');
+      d.className = 'benefit';
+      d.innerHTML = `<div class="check">✓</div><div>${b}</div>`;
+      benefitsDiv.appendChild(d);
+    });
+
+    container.querySelector('#open-form').addEventListener('click', () => { state.showForm = true; render(); });
+    container.querySelector('#new').addEventListener('click', () => { restart(); render(); });
+  }
+
+  function renderForm(){
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <header class="center small">
+        <div class="pill">Kontakt</div>
+        <h2>Angebot anfordern</h2>
+        <p class="muted">Wir erstellen Ihnen ein individuelles Angebot basierend auf Ihren Angaben.</p>
+      </header>
+      <form id="lead-form" class="card" style="border:none; box-shadow:none; padding:0; background:transparent;" novalidate>
+        <div class="field"><label>Firma *</label><input id="firma" type="text" placeholder="Firmenname" value="${escapeHtml(state.form.firma)}"></div>
+        <div class="field"><label>Ansprechpartner *</label><input id="ansprechpartner" type="text" placeholder="Vorname Nachname" value="${escapeHtml(state.form.ansprechpartner)}"></div>
+        <div class="field"><label>E-Mail *</label><input id="email" type="email" placeholder="name@firma.de" value="${escapeHtml(state.form.email)}"></div>
+        <div class="field"><label>Telefon *</label><input id="telefon" type="tel" placeholder="+49 ..." value="${escapeHtml(state.form.telefon)}"></div>
+        <div class="field"><label>Nachricht (Optional)</label><textarea id="nachricht" rows="4" placeholder="Zusätzliche Wünsche...">${escapeHtml(state.form.nachricht)}</textarea></div>
+        <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+          <button id="submit" class="btn-primary" type="button" style="flex:1">Anfrage absenden</button>
+          <button id="back" class="btn-ghost" type="button">← Zurück</button>
+        </div>
+      </form>
+    `;
+    app.innerHTML = '';
+    app.appendChild(container);
+
+    container.querySelector('#submit').addEventListener('click', () => {
+      const firma = container.querySelector('#firma').value.trim();
+      const ansprechpartner = container.querySelector('#ansprechpartner').value.trim();
+      const email = container.querySelector('#email').value.trim();
+      const telefon = container.querySelector('#telefon').value.trim();
+      const nachricht = container.querySelector('#nachricht').value.trim();
+
+      if(!firma || !ansprechpartner || !email || !telefon){
+        alert('Bitte füllen Sie alle Pflichtfelder (*) aus.');
+        return;
+      }
+      state.form = { firma, ansprechpartner, email, telefon, nachricht };
+      alert('Vielen Dank! Ihre Anfrage wurde an JDE Professional übermittelt. Ein Berater meldet sich in Kürze.');
+      restart();
+      render();
+    });
+
+    container.querySelector('#back').addEventListener('click', () => { state.showForm = false; render(); });
+  }
+
+  // abort screens
+  function renderEventAbort(){
+    app.innerHTML = `
+      <div class="center" style="padding:40px 0">
+        <div style="font-size:48px;margin-bottom:16px">ℹ️</div>
+        <h2>Event-Anfrage</h2>
+        <p class="muted" style="max-width:500px; margin:0 auto 24px;">
+          Unsere Online-Beratung ist auf dauerhafte Lösungen spezialisiert. 
+          Für Event-Anfragen wenden Sie sich bitte direkt an unseren Kundenservice.
+        </p>
+        <div class="actions" style="justify-content:center;">
+          <button class="btn-primary" id="restart">Zurück zum Start</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('restart').addEventListener('click', () => { restart(); render(); });
+  }
+
+  function renderPrivateAbort(){
+    app.innerHTML = `
+      <div class="center" style="padding:40px 0">
+        <div style="font-size:48px;margin-bottom:16px">🏠</div>
+        <h2>Privatkunden</h2>
+        <p class="muted" style="max-width:500px; margin:0 auto 24px;">
+           Jacobs Douwe Egberts Professional richtet sich ausschließlich an Geschäftskunden (B2B). 
+           Bitte besuchen Sie unseren Shop für Endverbraucher.
+        </p>
+        <div class="actions" style="justify-content:center;">
+          <button class="btn-primary" id="restart2">Zurück zum Start</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('restart2').addEventListener('click', () => { restart(); render(); });
+  }
+
+  // utilities
+  function restart(){
+    state = {
+      level: 1,
+      branche: '',
+      einsatzart: '',
+      kundentyp: '',
+      mitarbeiter: '',
+      getraenke: [],
+      festwasser: '',
+      showForm: false,
+      form: { firma:'', ansprechpartner:'', email:'', telefon:'', nachricht:'' }
+    };
+  }
+
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+
+  // initial render
+  render();
+
+  </script>
+
+<script>
+  // Example user data
+  const user = {
+    id: "guest_" + Math.random().toString(36).substr(2, 9),
+    name: "Website Visitor",
+    email: "", 
+    createdAt: Math.floor(new Date().getTime() / 1000)
+  };
+
+  window.intercomSettings = {
+    api_base: "https://api-iam.intercom.io",
+    app_id: "wpspekbt",
+    user_id: user.id,
+    name: user.name,
+    created_at: user.createdAt
+  };
+</script>
+
+<script>
+  (function(){
+    var w=window; var ic=w.Intercom;
+    if(typeof ic==="function"){
+      ic('reattach_activator'); ic('update',w.intercomSettings);
+    } else {
+      var d=document; var i=function(){i.c(arguments);}; i.q=[];
+      i.c=function(args){i.q.push(args);}; w.Intercom=i;
+      var l=function(){
+        var s=d.createElement('script'); s.type='text/javascript'; s.async=true;
+        s.src='https://widget.intercom.io/widget/wpspekbt';
+        var x=d.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s,x);
+      };
+      if(document.readyState==='complete'){l();}
+      else if(w.attachEvent){w.attachEvent('onload',l);}
+      else{w.addEventListener('load',l,false);}
+    }
+  })();
+</script>
+
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');
+</script>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+</body>
+</html>
