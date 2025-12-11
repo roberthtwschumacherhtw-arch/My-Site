@@ -33,12 +33,11 @@
       text-decoration: none;
     }
 
-    /* Hilfsklasse für das Logo-Bild */
+    /* NEU: Hilfsklasse für das Logo-Bild */
     .logo-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
+      object-fit: cover; /* Sorgt dafür, dass das Bild den Kreis ausfüllt */
       display: block;
     }
 
@@ -81,17 +80,19 @@
       gap: 0.75rem;
     }
 
+    /* Anpassung für das Logo im Header */
     .logo-circle {
-      width: 40px; /* Leicht vergrößert für das Bild */
-      height: 40px;
+      width: 42px;  /* Etwas größer für das Bild */
+      height: 42px;
       border-radius: 50%;
-      /* background entfernt, da das Bild den Hintergrund liefert */
-      background: transparent;
+      background: transparent; /* Kein Hintergrund mehr nötig */
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-      overflow: hidden; /* Wichtig, damit das Bild rund bleibt */
+      overflow: hidden; /* Wichtig: Schneidet die Ecken des JPGs rund ab */
     }
 
     .brand-text {
@@ -471,24 +472,22 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      /* Hintergrund angepasst, falls das Bild Transparenz hat */
-      background: var(--jde-brown); 
+      background: var(--jde-brown);
       color: var(--jde-offwhite);
-      border-radius: 50%; /* Wichtig für runde Bilder */
-      width: 65px; /* Etwas größer für das Logo */
-      height: 65px;
-      font-size: 30px;
+      border-radius: 50%; /* Rund machen */
+      width: 70px; /* Etwas größer für das Logo */
+      height: 70px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       z-index: 999;
-      padding: 0; /* Padding weg, damit Bild alles ausfüllt */
-      overflow: hidden; /* Damit Bild nicht über den Rand ragt */
+      padding: 0; /* Padding weg, damit Bild füllt */
+      overflow: hidden; /* Ecken abschneiden für JPG */
       transition: transform 0.2s ease;
     }
-
+    
     #chat-toggle:hover {
         transform: scale(1.05);
     }
@@ -630,7 +629,7 @@
     <nav class="nav">
       <div class="nav-left">
         <div class="logo-circle">
-            <img src="grafik.jpg" alt="JDE Logo" class="logo-img">
+          <img src="grafik.jpg" alt="JDE Logo" class="logo-img">
         </div>
         <div class="brand-text">
           <span>BOIT x JDE Professional</span>
@@ -796,7 +795,7 @@
 </div>
 
 <div id="chat-toggle">
-    <img src="grafik.jpg" alt="Chat öffnen" class="logo-img">
+  <img src="grafik.jpg" alt="Chat öffnen" class="logo-img">
 </div>
 
 <div id="chat-window" aria-label="Support-Chat">
