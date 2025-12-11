@@ -3,198 +3,164 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Premium Kaffeemaschinen-Berater | JDE Professional</title>
+  <title>JDE Professional | Kaffeemaschinen-Berater</title>
   <style>
     :root {
-      /* JDE Corporate Identity */
+      /* JDE Colors */
       --jde-brown: #331E00;
       --jde-gold: #C89A4B;
       --jde-cream: #F6EADC;
-      --jde-offwhite: #FFFDFA;
+      --jde-grey: #f9f9f9;
       
-      --bg-gradient: radial-gradient(circle at top left, #F6EADC 0, #FFFDFA 40%, #ffffff 100%);
+      --bg-gradient: radial-gradient(circle at top left, #F6EADC 0, #ffffff 100%);
       --card-bg: rgba(255, 255, 255, 0.95);
-      --text-main: var(--jde-brown);
-      --text-muted: rgba(51, 30, 0, 0.6);
-      --border-color: rgba(51, 30, 0, 0.1);
-      
-      --anim-speed: 0.3s;
+      --shadow: 0 10px 40px rgba(51, 30, 0, 0.08);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       background: var(--bg-gradient);
-      color: var(--text-main);
+      color: var(--jde-brown);
       min-height: 100vh;
       padding: 20px;
       line-height: 1.5;
     }
 
-    .container { max-width: 850px; margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
     .center { text-align: center; }
 
-    /* Glassmorphism Card */
-    .card {
+    /* Main App Card */
+    .app-card {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       border-radius: 24px;
       padding: 40px;
-      box-shadow: 0 20px 40px rgba(51, 30, 0, 0.08);
+      box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,0.8);
-      transition: height 0.3s ease;
+      min-height: 650px;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Typography */
-    h1 { font-size: clamp(24px, 4vw, 36px); margin: 0 0 16px; color: var(--jde-brown); }
-    h2 { font-size: 22px; margin: 0 0 24px; font-weight: 600; }
-    p { margin-bottom: 24px; color: var(--text-muted); }
-
-    /* Grid Layouts */
-    .grid { display: grid; gap: 16px; }
-    .cols-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .cols-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-
-    /* Interactive Elements */
+    h1, h2 { color: var(--jde-brown); margin-top: 0; }
+    h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+    
+    /* Interactive Grid */
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    
     .option-btn {
       background: #fff;
-      border: 1px solid var(--border-color);
+      border: 1px solid rgba(0,0,0,0.08);
       border-radius: 16px;
-      padding: 24px;
-      text-align: left;
+      padding: 20px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition: all 0.2s ease;
+      text-align: center;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      height: 100%;
     }
-
     .option-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(51, 30, 0, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
       border-color: var(--jde-gold);
     }
-
     .option-btn.selected {
       background: var(--jde-cream);
       border-color: var(--jde-brown);
-      box-shadow: 0 0 0 2px var(--jde-brown) inset;
+      box-shadow: inset 0 0 0 2px var(--jde-brown);
     }
+    .option-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+    .option-label { font-weight: 700; display: block; margin-bottom: 4px; font-size: 0.95rem; }
+    .option-sub { font-size: 0.8rem; color: #666; display: block; line-height: 1.3; }
 
-    .option-icon { font-size: 32px; margin-bottom: 12px; }
-    .option-label { font-weight: 600; font-size: 1.05rem; display: block; }
-    .option-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
-
-    /* Progress Bar */
-    .progress-container {
-      height: 6px;
-      background: rgba(51,30,0,0.05);
-      border-radius: 99px;
-      margin: 20px 0 40px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      background: var(--jde-gold);
-      transition: width 0.5s ease;
-    }
-
-    /* Buttons */
-    .actions { display: flex; justify-content: space-between; margin-top: 40px; align-items: center; }
+    /* Navigation */
+    .footer-nav { margin-top: auto; padding-top: 40px; display: flex; justify-content: space-between; }
     
     .btn {
-      padding: 14px 28px;
-      border-radius: 99px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
       font-weight: 600;
       cursor: pointer;
-      border: none;
-      transition: all 0.2s;
       font-size: 1rem;
+      transition: 0.2s;
+    }
+    .btn-primary { background: var(--jde-brown); color: white; }
+    .btn-primary:hover { background: #503000; }
+    .btn-primary:disabled { background: #ddd; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--jde-brown); }
+
+    .progress { height: 6px; background: #eee; border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--jde-gold); transition: width 0.4s ease; }
+
+    /* Results Layout */
+    .results-grid { 
+      display: grid; 
+      gap: 24px; 
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
     }
     
-    .btn-primary {
-      background: var(--jde-brown);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(51, 30, 0, 0.2);
-    }
-    .btn-primary:hover { transform: translateY(-2px); background: #4a2c00; }
-    .btn-primary:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    .btn-ghost { background: transparent; color: var(--text-muted); }
-    .btn-ghost:hover { color: var(--jde-brown); background: rgba(51,30,0,0.05); }
-
-    /* Result Cards */
     .machine-card {
       background: white;
-      border: 1px solid var(--border-color);
       border-radius: 16px;
-      overflow: hidden;
-      transition: transform 0.2s;
-      text-decoration: none;
-      color: inherit;
+      border: 1px solid #eee;
       display: flex;
       flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      overflow: hidden;
       height: 100%;
     }
     .machine-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(51,30,0,0.15);
       border-color: var(--jde-gold);
     }
-    .machine-header {
-      background: var(--jde-cream);
+    
+    .m-image-container {
+      background: #fff;
+      height: 200px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
-      text-align: center;
-      font-size: 40px;
+      border-bottom: 1px solid #f0f0f0;
     }
-    .machine-body { padding: 20px; flex-grow: 1; }
-    .machine-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: var(--jde-brown); display:block;}
-    .machine-tag { 
-      display: inline-block; font-size: 0.75rem; background: var(--jde-brown); color: white; 
-      padding: 4px 8px; border-radius: 4px; margin-bottom: 12px;
+    
+    .m-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
     }
-    .machine-link {
-        margin-top: auto;
-        padding: 12px;
-        text-align: center;
-        background: var(--jde-brown);
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
+    .machine-card:hover .m-image { transform: scale(1.05); }
 
-    /* Loading Animation */
-    .loader {
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      border: 5px solid var(--jde-cream);
-      border-bottom-color: var(--jde-brown);
-      border-radius: 50%;
-      animation: rotation 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .m-body { padding: 20px; flex-grow: 1; display:flex; flex-direction:column; }
+    .m-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; color: var(--jde-gold); margin-bottom: 8px; display: block; }
+    .m-title { font-weight: 800; font-size: 1.2rem; margin-bottom: 12px; line-height: 1.2; color: var(--jde-brown); }
+    
+    .m-specs { list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 0.85rem; color: #555; flex-grow: 1; }
+    .m-specs li { margin-bottom: 6px; padding-left: 18px; position: relative; }
+    .m-specs li::before { content: "✓"; color: var(--jde-gold); position: absolute; left: 0; font-weight: bold; }
 
-    /* Form Styles */
-    .input-group { margin-bottom: 16px; text-align: left; }
-    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
-    .input-group input, .input-group textarea {
-      width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;
-      font-size: 1rem; outline: none; transition: border-color 0.2s;
-    }
-    .input-group input:focus { border-color: var(--jde-gold); }
+    .m-link { background: var(--jde-brown); color: white; text-align: center; padding: 12px; font-weight: 600; font-size: 0.9rem; border-radius: 8px; margin-top: auto; }
 
-    /* Mobile */
-    @media (max-width: 600px) {
-      .card { padding: 24px; border-radius: 16px; }
-      .actions { flex-direction: column-reverse; gap: 16px; }
+    /* Loader */
+    .loader { width: 50px; height: 50px; border: 5px solid var(--jde-cream); border-top-color: var(--jde-brown); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 20px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    @media(max-width: 600px){
+      .app-card { padding: 20px; min-height: auto; }
+      .footer-nav { flex-direction: column-reverse; gap: 16px; }
       .btn { width: 100%; }
     }
   </style>
@@ -202,301 +168,403 @@
 <body>
 
 <div class="container">
-  <div class="center" style="margin-bottom: 20px;">
-    <div style="font-weight: 800; font-size: 24px; color: var(--jde-brown); letter-spacing: -1px;">
-      JDE <span style="color:var(--jde-gold)">Professional</span>
-    </div>
-    <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted);">Maschinen-Berater</div>
+  <div class="center" style="margin-bottom: 30px;">
+    <span style="font-weight:800; font-size:26px; color:var(--jde-brown)">JDE</span> 
+    <span style="font-weight:400; font-size:26px; color:var(--jde-gold)">Professional</span>
   </div>
 
-  <div id="app" class="card">
-    </div>
-  
-  <footer class="center" style="margin-top: 32px; font-size: 12px; color: var(--text-muted);">
-    © 2025 Jacobs Douwe Egberts Professional | Demo Projekt
-  </footer>
+  <div id="app" class="app-card"></div>
 </div>
 
 <script>
 /**
- * KONFIGURATION & DATEN
+ * DATENBANK UPDATE:
+ * 'water' Property hinzugefügt: 'tank' (nur Tank möglich/üblich), 'fixed' (nur Festwasser), 'both' (Beides möglich).
  */
+const allMachines = [
+  // -- BOHNEN (BEAN) --
+   { 
+    id: 'wmf950', name: 'WMF 950 S', type: 'bean', milk: 'fresh',
+    tags: ['Einstieg', 'Kompakt'], 
+    specs: ['Frischmilch System', 'Bis 50 Tassen/Tag', 'Kompaktes Design'],
+    url: 'https://www2.jacobs-professional.de/produkt/wmf-950s', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCRZP6AEMJNNBZHCJAHI7X3GX47A?channelId=0ap07000000PCg2' 
+  },
+  { 
+    id: 'wittenborg100', name: 'Wittenborg W100', type: 'bean', milk: 'fresh',
+    tags: ['Design', 'Office'], 
+    specs: ['Frischmilch', 'Premium Glasfront', 'Sehr leise'],
+    url: 'https://www2.jacobs-professional.de/produkt/Wittenborg-W100', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGQY3NBV5PFACTJDTPE4RTFYMD4?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'club', name: 'Schaerer Coffee Club', type: 'bean', milk: 'both',
+    tags: ['Flexibel', 'Touch'], 
+    specs: ['Frischmilch oder Pulver', '7" Touchscreen', 'Leichte Reinigung'],
+    url: 'https://www2.jacobs-professional.de/produkt/Schaerer-Coffee-Club', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCUP46V66KYFCMLHPFXLHCZSGFPU?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'skye', name: 'Schaerer Coffee Skye', type: 'bean', milk: 'fresh',
+    tags: ['Mittelstand', 'Flexibel'], 
+    specs: ['Frischmilch Pure', 'Beweglicher Screen', 'Großer Wassertank'],
+    url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-skye', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCWVX4U4CIRCQLIZRZSORADIMGY?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'skye_top', name: 'Schaerer Skye Pure', type: 'bean', milk: 'topping',
+    tags: ['Topping', 'Hygiene'], 
+    specs: ['100% Milchpulver', 'Minimaler Reinigungsaufwand', 'Kein Kühlschrank nötig'],
+    url: 'https://www2.jacobs-professional.de/produkt/schaerer-skye-topping', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCAD5G3Z7RJFG5FBOFMUBPSJDXKY?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'soul', name: 'Schaerer Coffee Soul', type: 'bean', milk: 'fresh',
+    tags: ['High-End', 'Animation'], 
+    specs: ['Best Foam™ Milchschaum', 'Video-Display', 'Bis 250 Tassen/Tag'],
+    url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-soul', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCILO32W74FVAUDGCITVGKUI4ZIA?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'wmf1100f', name: 'WMF 1100S Frischmilch', type: 'bean', milk: 'fresh',
+    tags: ['Profi', 'Marke'], 
+    specs: ['WMF Profi-Brüher', 'Frischmilch System', 'App-Steuerung'],
+    url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-frischmilch', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCZUZI6DQH5FGUJHKYFK5VMARCLQ?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'wmf1100i', name: 'WMF 1100S Topping', type: 'bean', milk: 'topping',
+    tags: ['Profi', 'Wartungsarm'], 
+    specs: ['WMF Qualität', 'Topping-Pulver', 'Nur 1x wöchentlich reinigen'],
+    url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-instantmilch', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCDRU4UEWMKNA6RC3UH2DOCMCH2U?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'witt9100', name: 'Wittenborg 9100', type: 'bean', milk: 'topping',
+    tags: ['Robust', 'Vielseitig'], 
+    specs: ['Geteilter Bohnenbehälter', 'Topping & Kakao', 'Sehr robust'],
+    url: 'https://www2.jacobs-professional.de/produkt/wittenborg-9100-espresso', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC27RIXWBDJNEOVFD2LHHEQPV2SE?channelId=0ap07000000PCg2'
+  },
+
+  // -- LIQUID / CAFITESSE (SPEED) --
+  { 
+    id: 'caf_exc_touch', name: 'Excellence Touch', type: 'liquid', milk: 'liquid',
+    tags: ['High-Speed', 'Kantine'], 
+    specs: ['1 Tasse in 12 Sek', 'Touchscreen', 'Bis 600 Tassen/Std'],
+    url: 'https://www2.jacobs-professional.de/produkt/cafitessee-excellence-touch-experience', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC2WKK72BV7BB35ADFJGISC3X5V4?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'caf_compact', name: 'Excellence Compact', type: 'liquid', milk: 'liquid',
+    tags: ['Kompakt', 'Schnell'], 
+    specs: ['Passt unter Küchenschrank', 'Plug & Play', 'Festwasser oder Tank'],
+    url: 'https://www2.jacobs-professional.de/produkt/Cafitesse-Excellence-Compact-Touch-Experience', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCD2G5RHEYNDVZF3C24ZQKMVSQY?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'caf_quant300', name: 'Quantum Touch 300', type: 'liquid', milk: 'liquid',
+    tags: ['Industrie', 'Maximal'], 
+    specs: ['Massive Leistung', 'Für Kannen geeignet', 'Robustes Gehäuse'],
+    url: 'https://www2.jacobs-professional.de/produkt/cafitesse-quantum-touch-300', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC5OXCQ3MKRRA3TLALUAKZW2BTUY?channelId=0ap07000000PCg2'
+  },
+
+  // -- KAPSEL / PAD --
+  { 
+    id: 'lor_mini', name: 'L\'OR Mini', type: 'capsule', milk: 'none',
+    tags: ['Premium', 'Einzel'], 
+    specs: ['Aluminium Kapseln', 'Espresso Qualität', 'Klein & Edel'],
+    url: 'https://www2.jacobs-professional.de/produkt/lor-mini-kapselmaschine', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCYQBMC2XO2NDI5EDZZK2H3QNEVQ?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'senseo_maestro', name: 'Senseo Maestro', type: 'pad', milk: 'none',
+    tags: ['Pad', 'Budget'], 
+    specs: ['Kompostierbare Pads', 'Günstige Tasse', 'Direktwahltasten'],
+    url: 'https://www2.jacobs-professional.de/produkt/senseo-maestro', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCE4LC6E3HMVEO7L5O5IJRNONESU?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'senseo_switch', name: 'Senseo Switch', type: 'pad', milk: 'none',
+    tags: ['2-in-1', 'Flexibel'], 
+    specs: ['Pad für Tassen', 'Filter für Kanne', 'Ideal für kleine Büros'],
+    url: 'https://www2.jacobs-professional.de/produkt/senseo-switch-pad-und-filterkaffeemaschine', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC7ORL62G2EFD57CRJZKDJ2VYIBM?channelId=0ap07000000PCg2'
+  },
+
+  // -- SONSTIGES --
+  { 
+    id: 'barista_mobil', name: 'Barista Mobil', type: 'mobile', 
+    tags: ['Mobil', 'Event'],
+    specs: ['Mobil auf Rollen', 'Autarkes Wasser', 'Branding möglich'], 
+    url: 'https://www2.jacobs-professional.de/produkt/jacobs-barista-mobil', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC7VB5SFNPVNB3ZI4C6UQ64YKMYA?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'bonamat_b10', name: 'Bonamat B10', type: 'filter', 
+    tags: ['Filter', 'Groß'],
+    specs: ['10 Liter Vorrat', 'Für Stoßzeiten', 'Einfache Bedienung'], 
+    url: 'https://www2.jacobs-professional.de/produkt/bonamat-b10', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCNFI4F4FBG5G5PJ2DPOKFI2POMU?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'wasser_e6', name: 'Wasserspender E6', type: 'water', 
+    tags: ['Wasser', 'Hygiene'],
+    specs: ['Hygiene Plus', 'Sprudel & Still', 'Berührungslos'], 
+    url: 'https://www2.jacobs-professional.de/produkt/wasserspender-e6-hygiene-plus', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCWHMNTSY6URGCRBET2VRW3XR6DU?channelId=0ap07000000PCg2'
+  },
+  { 
+    id: 'jacobs_mini', name: 'Jacobs Mini', type: 'capsule', 
+    tags: ['Hotel', 'Kapsel'],
+    specs: ['Ideal fürs Hotelzimmer', 'Kompakt', 'Jacobs Qualität'], 
+    url: 'https://www2.jacobs-professional.de/produkt/jacobs-mini-kapselmaschine', 
+    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGL6TH4YOWNHDHOL4HU5FKIUTPE?channelId=0ap07000000PCg2'
+  }
+];
+
+// --- FRAGEN LOGIK (ERWEITERT) ---
 const questions = [
   {
-    id: 'branche',
-    title: 'In welcher Branche sind Sie tätig?',
-    subtitle: 'Wählen Sie Ihren Bereich aus.',
+    id: 'einsatz',
+    title: '1. Einsatzbereich',
     options: [
-      { id: 'buero', label: 'Büro / Agentur', icon: '🏢' },
-      { id: 'gastro', label: 'Gastronomie / Hotel', icon: '🍽️' },
-      { id: 'care', label: 'Pflege / Klinik', icon: '⚕️' },
-      { id: 'industrie', label: 'Industrie / Produktion', icon: '🏭' }
+      { id: 'office', label: 'Büro / Firma', icon: '🏢' },
+      { id: 'gastro', label: 'Gastronomie', icon: '🍽️' },
+      { id: 'care', label: 'Klinik / Pflege', icon: '⚕️' },
+      { id: 'event', label: 'Event / Mobil', icon: '🎉' }
     ]
   },
   {
-    id: 'mitarbeiter',
-    title: 'Wie viele Personen versorgen Sie täglich?',
-    subtitle: 'Mitarbeiter und Gäste zusammen.',
+    id: 'menge',
+    title: '2. Tagesbedarf',
+    condition: (a) => a.einsatz !== 'event',
     options: [
-      { id: 'small', label: 'Bis 15 Personen', icon: '👥', desc: 'Kleines Team / Wartezimmer' },
-      { id: 'medium', label: '16 – 50 Personen', icon: '🏢', desc: 'Mittlere Abteilung / Café' },
-      { id: 'large', label: '51 – 200 Personen', icon: '🏭', desc: 'Etage / Großer Bereich' },
-      { id: 'xl', label: 'Über 200 Personen', icon: '🏟️', desc: 'Kantine / Großveranstaltung' }
+      { id: 'small', label: 'Bis 30 Tassen', icon: '☕', sub: 'Kleines Team' },
+      { id: 'medium', label: '30 – 80 Tassen', icon: '📈', sub: 'Abteilung' },
+      { id: 'large', label: 'Über 80 Tassen', icon: '🏭', sub: 'Großraum / Kantine' }
     ]
   },
   {
-    id: 'getraenke',
-    title: 'Was soll die Maschine können?',
-    subtitle: 'Mehrfachauswahl möglich.',
-    multi: true,
+    id: 'art',
+    title: '3. Priorität',
+    condition: (a) => a.einsatz !== 'event',
     options: [
-      { id: 'kaffee', label: 'Kaffee Schwarz', icon: '☕' },
-      { id: 'milch', label: 'Cappuccino / Latte', icon: '🥛' },
-      { id: 'kakao', label: 'Kakao', icon: '🍫' },
-      { id: 'tee', label: 'Heißwasser / Tee', icon: '🍵' }
+      { id: 'quality', label: 'Qualität (Bohne)', icon: '🥇', sub: 'Wie vom Barista' },
+      { id: 'speed', label: 'Schnelligkeit', icon: '⚡', sub: 'Keine Wartezeiten' },
+      { id: 'easy', label: 'Einfachheit', icon: '👌', sub: 'Wenig Pflege' },
+      { id: 'filter', label: 'Filterkaffee', icon: '🫖', sub: 'Kannenbrühung' }
     ]
   },
   {
-    id: 'features',
-    title: 'Zusätzliche Anforderungen?',
-    subtitle: 'Was ist Ihnen besonders wichtig?',
-    multi: true,
+    id: 'milch',
+    title: '4. Milchsystem',
+    condition: (a) => (a.art === 'quality' || a.einsatz === 'gastro') && a.einsatz !== 'event',
     options: [
-      { id: 'festwasser', label: 'Festwasseranschluss', icon: '🚰', desc: 'Kein Tank-Nachfüllen' },
-      { id: 'payment', label: 'Bezahlsystem', icon: '💳', desc: 'Münzen oder Karte' },
-      { id: 'nachhaltig', label: 'Nachhaltigkeit', icon: '🌱', desc: 'Bio / Fairtrade Fokus' },
-      { id: 'speed', label: 'Hohe Geschwindigkeit', icon: '⚡', desc: 'Schnelle Ausgabe' }
+      { id: 'fresh', label: 'Frischmilch', icon: '🥛', sub: 'Bester Geschmack' },
+      { id: 'topping', label: 'Milchpulver', icon: '🍚', sub: 'Hygienisch & Wartungsarm' },
+      { id: 'none', label: 'Nur Schwarz', icon: '☕', sub: 'Keine Milch nötig' }
+    ]
+  },
+  // --- NEU: FINANZIERUNG (Step 5) ---
+  {
+    id: 'finance',
+    title: '5. Budget & Finanzierung',
+    condition: (a) => a.einsatz !== 'event',
+    options: [
+      { id: 'buy', label: 'Kauf', icon: '💶', sub: 'Direkter Erwerb' },
+      { id: 'lease', label: 'Leasing / Miete', icon: '📝', sub: 'Monatliche Rate' },
+      { id: 'ppc', label: 'Pay-per-Cup', icon: '☕', sub: 'Zahlung pro Tasse' }
+    ]
+  },
+  // --- NEU: STANDORT (Step 8 Logic) ---
+  {
+    id: 'space',
+    title: '6. Standort & Anschlüsse',
+    condition: (a) => a.einsatz !== 'event',
+    options: [
+      { id: 'full', label: 'Festwasser & Platz', icon: '🚰', sub: 'Alle Anschlüsse vorhanden' },
+      { id: 'tank', label: 'Nur Steckdose', icon: '🔌', sub: 'Tankbetrieb notwendig' },
+      { id: 'compact', label: 'Begrenzter Platz', icon: '📏', sub: 'Kompaktes Gerät nötig' }
+    ]
+  },
+  // --- NEU: NACHHALTIGKEIT (Step 9 Logic) ---
+  {
+    id: 'eco',
+    title: '7. Nachhaltigkeit',
+    condition: (a) => a.einsatz !== 'event',
+    options: [
+      { id: 'standard', label: 'Standard', icon: '✔️', sub: 'Gute Effizienz' },
+      { id: 'high', label: 'Hohe Priorität', icon: '🌱', sub: 'Energiesparmodus & Müllvermeidung' }
     ]
   }
 ];
 
-// State Management
-let state = {
-  step: 0,
-  answers: {},
-  loading: false
-};
-
+let state = { step: 0, answers: {}, loading: false };
 const app = document.getElementById('app');
 
-/**
- * RENDER ENGINE
- */
 function render() {
-  // 1. Loading Screen
   if (state.loading) {
-    app.innerHTML = `
-      <div class="center" style="padding: 40px 0;">
-        <div class="loader"></div>
-        <h2>Analysiere Anforderungen...</h2>
-        <p>Wir suchen die passende Lösung aus unserem Portfolio.</p>
-      </div>
-    `;
+    app.innerHTML = `<div class="center" style="padding:100px 0"><div class="loader"></div><h2>Analysiere Standort & Budget...</h2></div>`;
     return;
   }
 
-  // 2. Result Screen
   if (state.step >= questions.length) {
     renderResults();
     return;
   }
 
-  // 3. Question Screen
   const q = questions[state.step];
-  const progress = ((state.step + 1) / (questions.length + 1)) * 100;
-  
+  if (q.condition && !q.condition(state.answers)) {
+    state.step++;
+    render();
+    return;
+  }
+
+  const progress = ((state.step + 1) / questions.length) * 100;
+
   let html = `
-    <div class="progress-container"><div class="progress-bar" style="width: ${progress}%"></div></div>
-    <h2>${q.title}</h2>
-    <p>${q.subtitle}</p>
-    <div class="grid ${q.options.length > 2 ? 'cols-2' : 'grid'}">
+    <div class="progress"><div class="progress-bar" style="width:${progress}%"></div></div>
+    <h2 class="center">${q.title}</h2>
+    <div class="grid" style="margin-top:32px">
   `;
 
   q.options.forEach(opt => {
-    const isSelected = isOptionSelected(q.id, opt.id);
+    const isSel = isSelected(q.id, opt.id);
     html += `
-      <div class="option-btn ${isSelected ? 'selected' : ''}" onclick="handleSelection('${q.id}', '${opt.id}', ${q.multi})">
-        <div class="option-icon">${opt.icon}</div>
+      <div class="option-btn ${isSel ? 'selected' : ''}" onclick="select('${q.id}', '${opt.id}')">
+        <span class="option-icon">${opt.icon}</span>
         <span class="option-label">${opt.label}</span>
-        ${opt.desc ? `<span class="option-desc">${opt.desc}</span>` : ''}
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
       </div>
     `;
   });
 
-  html += `</div>`;
-
-  // Navigation Buttons
-  html += `<div class="actions">
-    <button class="btn btn-ghost" onclick="prevStep()" ${state.step === 0 ? 'style="visibility:hidden"' : ''}>← Zurück</button>
-    <button class="btn btn-primary" onclick="nextStep()" id="nextBtn" ${!canProceed(q.id) ? 'disabled' : ''}>
-      ${state.step === questions.length - 1 ? 'Analyse starten' : 'Weiter'}
-    </button>
-  </div>`;
-
+  html += `</div>
+    <div class="footer-nav">
+      <button class="btn btn-ghost" onclick="prev()" ${state.step===0?'disabled':''}>Zurück</button>
+      <button class="btn btn-primary" onclick="next()" id="nextBtn" ${!canNext(q.id)?'disabled':''}>Weiter</button>
+    </div>
+  `;
   app.innerHTML = html;
 }
 
-/**
- * LOGIC HANDLERS
- */
-function handleSelection(qId, optId, isMulti) {
-  if (!state.answers[qId]) state.answers[qId] = isMulti ? [] : null;
-
-  if (isMulti) {
-    const idx = state.answers[qId].indexOf(optId);
-    if (idx > -1) state.answers[qId].splice(idx, 1);
-    else state.answers[qId].push(optId);
-  } else {
-    state.answers[qId] = optId;
-    // Auto-advance for single choice adds smooth flow
-    setTimeout(() => nextStep(), 250); 
-  }
+function select(qId, optId) {
+  state.answers[qId] = optId;
+  setTimeout(next, 250); // Auto forward
   render();
 }
 
-function isOptionSelected(qId, optId) {
-  const val = state.answers[qId];
-  if (Array.isArray(val)) return val.includes(optId);
-  return val === optId;
-}
+function isSelected(qId, optId) { return state.answers[qId] === optId; }
+function canNext(qId) { return !!state.answers[qId]; }
 
-function canProceed(qId) {
-  const val = state.answers[qId];
-  if (Array.isArray(val)) return val.length > 0;
-  return !!val;
-}
-
-function prevStep() {
-  if (state.step > 0) {
-    state.step--;
-    render();
-  }
-}
-
-function nextStep() {
-  const q = questions[state.step];
-  if (!canProceed(q.id)) return;
-
-  if (state.step < questions.length - 1) {
-    state.step++;
-    render();
-  } else {
-    // Finish -> Fake Loading
+function next() {
+  state.step++;
+  if (state.step >= questions.length) {
     state.loading = true;
     render();
-    setTimeout(() => {
-      state.loading = false;
-      state.step++; // Move to results
-      render();
-    }, 1500);
+    setTimeout(() => { state.loading = false; render(); }, 1500);
+  } else {
+    render();
   }
 }
 
-/**
- * RECOMMENDATION ENGINE
- */
-function getRecommendation() {
-  const ans = state.answers;
-  let category = "Standard";
-  let reason = "Basierend auf Ihrer Auswahl.";
-  let machines = [];
+function prev() {
+  if (state.step > 0) {
+    state.step--;
+    const q = questions[state.step];
+    if (q.condition && !q.condition(state.answers)) state.step--;
+    render();
+  }
+}
 
-  // Logik basierend auf Mitarbeiterzahl & Features
-  if (ans.mitarbeiter === 'small') {
-    category = "Compact Office";
-    reason = "Ideal für kleine Teams und Meetingräume ohne Festwasserbedarf.";
-    machines = [
-       { name: "L'OR Promesso", tag: "Design Highlight", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/liquid-roast-maschinen/lor-promesso/", icon: "💎" },
-       { name: "Jura WE8", tag: "Klassiker", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/kaffeevollautomaten/jura-we8/", icon: "☕" }
-    ];
-  } else if (ans.mitarbeiter === 'medium') {
-    category = "Business Performance";
-    reason = "Perfekte Balance aus Qualität und Kapazität für Büros.";
-    machines = [
-      { name: "WMF 1100 S", tag: "Vollautomat", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/kaffeevollautomaten/wmf-1100s/", icon: "⚙️" },
-      { name: "Cafitesse Excellence Compact", tag: "Liquid Roast", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/liquid-roast-maschinen/cafitesse-excellence-compact-touch/", icon: "🚀" }
-    ];
-  } else {
-    // Large or XL
-    if (ans.features && ans.features.includes('speed')) {
-        category = "High Speed & Kantine";
-        reason = "Maximale Geschwindigkeit (Liquid Roast) für Stoßzeiten.";
-        machines = [
-          { name: "Cafitesse Quantum 300", tag: "Speed-Master", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/easy-coffee-maschinen/cafitesse-quantum-300/", icon: "⚡" },
-          { name: "Cafitesse Excellence Touch", tag: "Touch-Display", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/liquid-roast-maschinen/cafitess-excellence-touch/", icon: "🖥️" }
-        ];
-    } else {
-        category = "Premium Barista";
-        reason = "Höchste Kaffeequalität mit frischen Bohnen und Milch.";
-        machines = [
-          { name: "Schaerer Coffee Soul", tag: "Barista Style", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/kaffeevollautomaten/schaerer-coffee-soul/", icon: "🎨" },
-          { name: "Franke A800", tag: "High-End", url: "https://www.jacobs-professional.de/produkte/kaffeemaschinen/kaffeevollautomaten/franke-a800/", icon: "🦾" }
-        ];
+// --- FILTER & MATCHING LOGIK ---
+function getResults() {
+  const a = state.answers;
+  let matches = allMachines.filter(m => {
+    // 1. Event
+    if (a.einsatz === 'event') return m.type === 'mobile';
+    if (m.type === 'mobile') return false;
+
+    // 2. Menge
+    if (a.menge === 'small') {
+      if (['capsule', 'pad'].includes(m.type)) return true;
+      if (m.id === 'wmf950') return true;
+      return false;
     }
-  }
 
-  // Add-On Logic
-  if(ans.features && ans.features.includes('payment')){
-    reason += " Geeignet für Bezahlsysteme.";
-  }
-  if(ans.features && ans.features.includes('nachhaltig')){
-    reason += " Wir empfehlen dazu unsere Bio & Fairtrade Bohnen.";
-  }
+    // 3. Standort-Filter (Space/Water)
+    // Wenn 'Nur Steckdose' gewählt wurde, schließe reine Festwasser-Maschinen aus
+    if (a.space === 'tank' && m.water === 'fixed') return false;
+    // Wenn 'Begrenzter Platz', schließe große Maschinen aus
+    if (a.space === 'compact' && (m.tags.includes('Menge') || m.id === 'soul' || m.id === 'caf_exc_touch')) return false;
 
-  return { category, reason, machines };
+    // 4. Technologie
+    if (a.art === 'speed') return m.type === 'liquid';
+    if (a.art === 'quality') {
+       if (m.type !== 'bean') return false;
+       if (a.milch === 'fresh' && m.milk !== 'fresh' && m.milk !== 'both') return false;
+       if (a.milch === 'topping' && m.milk !== 'topping' && m.milk !== 'both') return false;
+       return true;
+    }
+    
+    // 5. Nachhaltigkeits-Logik (Kapseln vermeiden bei hoher Prio)
+    if (a.eco === 'high' && m.type === 'capsule') return false;
+
+    return true;
+  });
+
+  // Nachfilterung Menge
+  if (a.menge === 'medium') matches = matches.filter(m => !['capsule','pad'].includes(m.type));
+  if (a.menge === 'large') matches = matches.filter(m => m.tags.includes('Industrie') || m.tags.includes('Profi') || m.tags.includes('Performance'));
+
+  return matches.slice(0, 4);
 }
 
 function renderResults() {
-  const res = getRecommendation();
+  const results = getResults();
+  const financeModel = state.answers.finance === 'ppc' ? 'Pay-per-Cup Modell' : (state.answers.finance === 'lease' ? 'Leasing-Angebot' : 'Kauf-Angebot');
   
   let html = `
     <div class="center">
-      <div style="font-size:40px; margin-bottom:10px">🎉</div>
-      <h2>Ihr perfektes Match: <span style="color:var(--jde-gold)">${res.category}</span></h2>
-      <p style="max-width:600px; margin:0 auto 30px;">${res.reason}</p>
+      <h2>Ihre maßgeschneiderte Lösung</h2>
+      <p>Passend zu Ihrem Standort und dem gewünschten <strong>${financeModel}</strong>.</p>
     </div>
-
-    <div class="grid cols-2" style="margin-bottom:40px;">
+    <div class="results-grid">
   `;
-
-  res.machines.forEach(m => {
-    html += `
-      <a href="${m.url}" target="_blank" class="machine-card">
-        <div class="machine-header">${m.icon}</div>
-        <div class="machine-body">
-          <span class="machine-tag">${m.tag}</span>
-          <span class="machine-name">${m.name}</span>
-          <div style="font-size:0.9rem; color:var(--text-muted)">Klicken für Details</div>
-        </div>
-        <div class="machine-link">Jetzt ansehen ↗</div>
-      </a>
-    `;
-  });
-
-  html += `
-    </div>
-    
-    <div style="background:var(--jde-cream); padding:24px; border-radius:16px; margin-top:32px;">
-      <h3 style="margin-top:0; text-align:center; color:var(--jde-brown)">Interessiert?</h3>
-      <p class="center" style="margin-bottom:20px; color:var(--jde-brown)">Fordern Sie ein unverbindliches Angebot an.</p>
+  
+  if(results.length === 0) {
+    html += `<p class="center">Für Ihre spezifischen Standort-Anforderungen kontaktieren Sie bitte direkt unseren Kundenservice.</p>`;
+  } else {
+    results.forEach(m => {
+      const specsHtml = m.specs ? m.specs.map(s => `<li>${s}</li>`).join('') : '';
       
-      <div class="input-group">
-        <label>Ihre E-Mail Adresse</label>
-        <input type="email" placeholder="name@firma.de" id="finalEmail">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="alert('Vielen Dank! Ein JDE Berater meldet sich in Kürze.')">Angebot anfordern</button>
-      <div class="center" style="margin-top:16px">
-        <button class="btn btn-ghost" onclick="location.reload()">Neu starten</button>
-      </div>
-    </div>
-  `;
-
+      html += `
+        <a href="${m.url}" target="_blank" class="machine-card">
+          <div class="m-image-container">
+            <img src="${m.image}" alt="${m.name}" class="m-image" onerror="this.src='https://placehold.co/400x300?text=JDE+Machine'">
+          </div>
+          <div class="m-body">
+            <span class="m-tag">${m.tags.join(' • ')}</span>
+            <div class="m-title">${m.name}</div>
+            <ul class="m-specs">${specsHtml}</ul>
+            <div class="m-link">Zum Produkt ↗</div>
+          </div>
+        </a>
+      `;
+    });
+  }
+  
+  html += `</div>
+    <div class="center" style="margin-top:40px">
+      <button class="btn btn-ghost" onclick="location.reload()">Neustart</button>
+    </div>`;
+    
   app.innerHTML = html;
 }
 
-// Init
 render();
-
 </script>
 </body>
 </html>
