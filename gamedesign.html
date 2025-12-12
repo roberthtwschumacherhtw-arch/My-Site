@@ -40,14 +40,73 @@
       padding: 40px;
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,0.8);
-      min-height: 650px;
+      min-height: 750px;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     h1, h2 { color: var(--jde-brown); margin-top: 0; }
     h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+
+    /* --- SZENEN-BILD --- */
+    .scene-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center bottom;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(51,30,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      background: #eee;
+    }
+
+    /* --- CHARAKTER & SPRECHBLASE --- */
+    .advisor-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      background: rgba(246, 234, 220, 0.4);
+      padding: 15px;
+      border-radius: 20px;
+      border: 1px solid rgba(51,30,0,0.05);
+    }
+
+    .advisor-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--jde-gold);
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .advisor-bubble {
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px 20px;
+      color: var(--jde-brown);
+      font-size: 0.95rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.05);
+      line-height: 1.4;
+    }
     
+    .advisor-bubble::after {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 10px 10px 10px 0;
+      border-style: solid;
+      border-color: transparent #fff transparent transparent;
+    }
+
     /* Interactive Grid */
     .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     
@@ -101,60 +160,42 @@
     .progress-bar { height: 100%; background: var(--jde-gold); transition: width 0.4s ease; }
 
     /* Results Layout */
-    .results-grid { 
-      display: grid; 
-      gap: 24px; 
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-    }
+    .results-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
     
     .machine-card {
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s ease;
-      overflow: hidden;
-      height: 100%;
+      background: white; border-radius: 16px; border: 1px solid #eee;
+      display: flex; flex-direction: column; text-decoration: none; color: inherit;
+      transition: all 0.3s ease; overflow: hidden; height: 100%;
     }
-    .machine-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(51,30,0,0.15);
-      border-color: var(--jde-gold);
-    }
+    .machine-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(51,30,0,0.15); border-color: var(--jde-gold); }
     
     .m-image-container {
-      background: #fff;
-      height: 200px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      border-bottom: 1px solid #f0f0f0;
+      background: #fff; height: 200px; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; border-bottom: 1px solid #f0f0f0;
     }
-    
-    .m-image {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-    }
+    .m-image { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.3s ease; }
     .machine-card:hover .m-image { transform: scale(1.05); }
 
     .m-body { padding: 20px; flex-grow: 1; display:flex; flex-direction:column; }
     .m-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; color: var(--jde-gold); margin-bottom: 8px; display: block; }
     .m-title { font-weight: 800; font-size: 1.2rem; margin-bottom: 12px; line-height: 1.2; color: var(--jde-brown); }
-    
     .m-specs { list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 0.85rem; color: #555; flex-grow: 1; }
     .m-specs li { margin-bottom: 6px; padding-left: 18px; position: relative; }
     .m-specs li::before { content: "✓"; color: var(--jde-gold); position: absolute; left: 0; font-weight: bold; }
-
     .m-link { background: var(--jde-brown); color: white; text-align: center; padding: 12px; font-weight: 600; font-size: 0.9rem; border-radius: 8px; margin-top: auto; }
 
-    /* Loader */
+    /* Message Box for Aborts */
+    .msg-box {
+      background: #fff3cd;
+      border: 1px solid #ffecb5;
+      color: #856404;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
     .loader { width: 50px; height: 50px; border: 5px solid var(--jde-cream); border-top-color: var(--jde-brown); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 20px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -162,16 +203,18 @@
       .app-card { padding: 20px; min-height: auto; }
       .footer-nav { flex-direction: column-reverse; gap: 16px; }
       .btn { width: 100%; }
+      .advisor-wrap { flex-direction: column; text-align: center; gap: 10px; }
+      .advisor-bubble::after { top: -10px; left: 50%; transform: translateX(-50%) rotate(90deg); }
     }
   </style>
 </head>
 <body>
 
+<a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 9999; background: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; color: #331E00; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 1px solid #ddd;">
+  ← Zurück
+</a>
+
 <div class="container">
-  <a href="index.html" style="display: inline-block; margin-bottom: 10px; text-decoration: none; color: var(--jde-brown); font-weight: 600; font-size: 0.9rem; border: 1px solid rgba(51,30,0,0.15); padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.6); transition: all 0.2s;" onmouseover="this.style.background='#fff'; this.style.transform='translateX(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.6)'; this.style.transform='none'">
-    ← Zurück zur Startseite
-  </a>
-  
   <div class="center" style="margin-bottom: 30px;">
     <span style="font-weight:800; font-size:26px; color:var(--jde-brown)">JDE</span> 
     <span style="font-weight:400; font-size:26px; color:var(--jde-gold)">Professional</span>
@@ -181,263 +224,159 @@
 </div>
 
 <script>
-/**
- * DATENBANK
- */
+// --- DATENBANK (Maschinen) ---
 const allMachines = [
-  // -- BOHNEN (BEAN) --
-   { 
-    id: 'wmf950', name: 'WMF 950 S', type: 'bean', milk: 'fresh', water: 'tank',
-    tags: ['Einstieg', 'Kompakt'], 
-    specs: ['Frischmilch System', 'Bis 50 Tassen/Tag', 'Kompaktes Design'],
-    url: 'https://www2.jacobs-professional.de/produkt/wmf-950s', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCRZP6AEMJNNBZHCJAHI7X3GX47A?channelId=0ap07000000PCg2' 
-  },
-  { 
-    id: 'wittenborg100', name: 'Wittenborg W100', type: 'bean', milk: 'fresh', water: 'both',
-    tags: ['Design', 'Office'], 
-    specs: ['Frischmilch', 'Premium Glasfront', 'Sehr leise'],
-    url: 'https://www2.jacobs-professional.de/produkt/Wittenborg-W100', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGQY3NBV5PFACTJDTPE4RTFYMD4?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'club', name: 'Schaerer Coffee Club', type: 'bean', milk: 'both', water: 'both',
-    tags: ['Flexibel', 'Touch'], 
-    specs: ['Frischmilch oder Pulver', '7" Touchscreen', 'Leichte Reinigung'],
-    url: 'https://www2.jacobs-professional.de/produkt/Schaerer-Coffee-Club', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCUP46V66KYFCMLHPFXLHCZSGFPU?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'skye', name: 'Schaerer Coffee Skye', type: 'bean', milk: 'fresh', water: 'both',
-    tags: ['Mittelstand', 'Flexibel'], 
-    specs: ['Frischmilch Pure', 'Beweglicher Screen', 'Großer Wassertank'],
-    url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-skye', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCWVX4U4CIRCQLIZRZSORADIMGY?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'skye_top', name: 'Schaerer Skye Pure', type: 'bean', milk: 'topping', water: 'both',
-    tags: ['Topping', 'Hygiene'], 
-    specs: ['100% Milchpulver', 'Minimaler Reinigungsaufwand', 'Kein Kühlschrank nötig'],
-    url: 'https://www2.jacobs-professional.de/produkt/schaerer-skye-topping', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCAD5G3Z7RJFG5FBOFMUBPSJDXKY?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'soul', name: 'Schaerer Coffee Soul', type: 'bean', milk: 'fresh', water: 'fixed',
-    tags: ['High-End', 'Animation'], 
-    specs: ['Best Foam™ Milchschaum', 'Video-Display', 'Bis 250 Tassen/Tag'],
-    url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-soul', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCILO32W74FVAUDGCITVGKUI4ZIA?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'wmf1100f', name: 'WMF 1100S Frischmilch', type: 'bean', milk: 'fresh', water: 'both',
-    tags: ['Profi', 'Marke'], 
-    specs: ['WMF Profi-Brüher', 'Frischmilch System', 'App-Steuerung'],
-    url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-frischmilch', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCZUZI6DQH5FGUJHKYFK5VMARCLQ?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'wmf1100i', name: 'WMF 1100S Topping', type: 'bean', milk: 'topping', water: 'both',
-    tags: ['Profi', 'Wartungsarm'], 
-    specs: ['WMF Qualität', 'Topping-Pulver', 'Nur 1x wöchentlich reinigen'],
-    url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-instantmilch', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCDRU4UEWMKNA6RC3UH2DOCMCH2U?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'witt9100', name: 'Wittenborg 9100', type: 'bean', milk: 'topping', water: 'both',
-    tags: ['Robust', 'Vielseitig'], 
-    specs: ['Geteilter Bohnenbehälter', 'Topping & Kakao', 'Sehr robust'],
-    url: 'https://www2.jacobs-professional.de/produkt/wittenborg-9100-espresso', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC27RIXWBDJNEOVFD2LHHEQPV2SE?channelId=0ap07000000PCg2'
-  },
-
-  // -- LIQUID / CAFITESSE (SPEED) --
-  { 
-    id: 'caf_exc_touch', name: 'Excellence Touch', type: 'liquid', milk: 'liquid', water: 'fixed',
-    tags: ['High-Speed', 'Kantine'], 
-    specs: ['1 Tasse in 12 Sek', 'Touchscreen', 'Bis 600 Tassen/Std'],
-    url: 'https://www2.jacobs-professional.de/produkt/cafitessee-excellence-touch-experience', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC2WKK72BV7BB35ADFJGISC3X5V4?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'caf_compact', name: 'Excellence Compact', type: 'liquid', milk: 'liquid', water: 'both',
-    tags: ['Kompakt', 'Schnell'], 
-    specs: ['Passt unter Küchenschrank', 'Plug & Play', 'Festwasser oder Tank'],
-    url: 'https://www2.jacobs-professional.de/produkt/Cafitesse-Excellence-Compact-Touch-Experience', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCD2G5RHEYNDVZF3C24ZQKMVSQY?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'caf_quant300', name: 'Quantum Touch 300', type: 'liquid', milk: 'liquid', water: 'fixed',
-    tags: ['Industrie', 'Maximal'], 
-    specs: ['Massive Leistung', 'Für Kannen geeignet', 'Robustes Gehäuse'],
-    url: 'https://www2.jacobs-professional.de/produkt/cafitesse-quantum-touch-300', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC5OXCQ3MKRRA3TLALUAKZW2BTUY?channelId=0ap07000000PCg2'
-  },
-
-  // -- KAPSEL / PAD --
-  { 
-    id: 'lor_mini', name: 'L\'OR Mini', type: 'capsule', milk: 'none', water: 'tank',
-    tags: ['Premium', 'Einzel'], 
-    specs: ['Aluminium Kapseln', 'Espresso Qualität', 'Klein & Edel'],
-    url: 'https://www2.jacobs-professional.de/produkt/lor-mini-kapselmaschine', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCYQBMC2XO2NDI5EDZZK2H3QNEVQ?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'senseo_maestro', name: 'Senseo Maestro', type: 'pad', milk: 'none', water: 'tank',
-    tags: ['Pad', 'Budget'], 
-    specs: ['Kompostierbare Pads', 'Günstige Tasse', 'Direktwahltasten'],
-    url: 'https://www2.jacobs-professional.de/produkt/senseo-maestro', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCE4LC6E3HMVEO7L5O5IJRNONESU?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'senseo_switch', name: 'Senseo Switch', type: 'pad', milk: 'none', water: 'tank',
-    tags: ['2-in-1', 'Flexibel'], 
-    specs: ['Pad für Tassen', 'Filter für Kanne', 'Ideal für kleine Büros'],
-    url: 'https://www2.jacobs-professional.de/produkt/senseo-switch-pad-und-filterkaffeemaschine', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC7ORL62G2EFD57CRJZKDJ2VYIBM?channelId=0ap07000000PCg2'
-  },
-
-  // -- SONSTIGES --
-  { 
-    id: 'barista_mobil', name: 'Barista Mobil', type: 'mobile', water: 'tank',
-    tags: ['Mobil', 'Event'],
-    specs: ['Mobil auf Rollen', 'Autarkes Wasser', 'Branding möglich'], 
-    url: 'https://www2.jacobs-professional.de/produkt/jacobs-barista-mobil', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC7VB5SFNPVNB3ZI4C6UQ64YKMYA?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'bonamat_b10', name: 'Bonamat B10', type: 'filter', 
-    tags: ['Filter', 'Groß'],
-    specs: ['10 Liter Vorrat', 'Für Stoßzeiten', 'Einfache Bedienung'], 
-    url: 'https://www2.jacobs-professional.de/produkt/bonamat-b10', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCNFI4F4FBG5G5PJ2DPOKFI2POMU?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'wasser_e6', name: 'Wasserspender E6', type: 'water', 
-    tags: ['Wasser', 'Hygiene'],
-    specs: ['Hygiene Plus', 'Sprudel & Still', 'Berührungslos'], 
-    url: 'https://www2.jacobs-professional.de/produkt/wasserspender-e6-hygiene-plus', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCWHMNTSY6URGCRBET2VRW3XR6DU?channelId=0ap07000000PCg2'
-  },
-  { 
-    id: 'jacobs_mini', name: 'Jacobs Mini', type: 'capsule', 
-    tags: ['Hotel', 'Kapsel'],
-    specs: ['Ideal fürs Hotelzimmer', 'Kompakt', 'Jacobs Qualität'], 
-    url: 'https://www2.jacobs-professional.de/produkt/jacobs-mini-kapselmaschine', 
-    image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGL6TH4YOWNHDHOL4HU5FKIUTPE?channelId=0ap07000000PCg2'
-  }
+   { id: 'wmf950', name: 'WMF 950 S', type: 'bean', milk: 'fresh', water: 'tank', sizeClass: 'medium', tags: ['Einstieg', 'Kompakt'], specs: ['Frischmilch System', 'Bis 50 Tassen/Tag', 'Kompaktes Design'], url: 'https://www2.jacobs-professional.de/produkt/wmf-950s', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCRZP6AEMJNNBZHCJAHI7X3GX47A?channelId=0ap07000000PCg2' },
+   { id: 'wittenborg100', name: 'Wittenborg W100', type: 'bean', milk: 'fresh', water: 'both', sizeClass: 'medium', tags: ['Design', 'Office'], specs: ['Frischmilch', 'Premium Glasfront', 'Sehr leise'], url: 'https://www2.jacobs-professional.de/produkt/Wittenborg-W100', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGQY3NBV5PFACTJDTPE4RTFYMD4?channelId=0ap07000000PCg2' },
+   { id: 'club', name: 'Schaerer Coffee Club', type: 'bean', milk: 'both', water: 'both', sizeClass: 'medium', tags: ['Flexibel', 'Touch'], specs: ['Frischmilch oder Pulver', '7" Touchscreen', 'Leichte Reinigung'], url: 'https://www2.jacobs-professional.de/produkt/Schaerer-Coffee-Club', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCUP46V66KYFCMLHPFXLHCZSGFPU?channelId=0ap07000000PCg2' },
+   { id: 'skye', name: 'Schaerer Coffee Skye', type: 'bean', milk: 'fresh', water: 'both', sizeClass: 'large', tags: ['Mittelstand', 'Flexibel'], specs: ['Frischmilch Pure', 'Beweglicher Screen', 'Großer Wassertank'], url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-skye', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCWVX4U4CIRCQLIZRZSORADIMGY?channelId=0ap07000000PCg2' },
+   { id: 'skye_top', name: 'Schaerer Skye Pure', type: 'bean', milk: 'topping', water: 'both', sizeClass: 'large', tags: ['Topping', 'Hygiene'], specs: ['100% Milchpulver', 'Minimaler Reinigungsaufwand', 'Kein Kühlschrank nötig'], url: 'https://www2.jacobs-professional.de/produkt/schaerer-skye-topping', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCAD5G3Z7RJFG5FBOFMUBPSJDXKY?channelId=0ap07000000PCg2' },
+   { id: 'soul', name: 'Schaerer Coffee Soul', type: 'bean', milk: 'fresh', water: 'fixed', sizeClass: 'xl', tags: ['High-End', 'Animation'], specs: ['Best Foam™ Milchschaum', 'Video-Display', 'Bis 250 Tassen/Tag'], url: 'https://www2.jacobs-professional.de/produkt/schaerer-coffee-soul', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCILO32W74FVAUDGCITVGKUI4ZIA?channelId=0ap07000000PCg2' },
+   { id: 'wmf1100f', name: 'WMF 1100S Frischmilch', type: 'bean', milk: 'fresh', water: 'both', sizeClass: 'large', tags: ['Profi', 'Marke'], specs: ['WMF Profi-Brüher', 'Frischmilch System', 'App-Steuerung'], url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-frischmilch', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCZUZI6DQH5FGUJHKYFK5VMARCLQ?channelId=0ap07000000PCg2' },
+   { id: 'wmf1100i', name: 'WMF 1100S Topping', type: 'bean', milk: 'topping', water: 'both', sizeClass: 'large', tags: ['Profi', 'Wartungsarm'], specs: ['WMF Qualität', 'Topping-Pulver', 'Nur 1x wöchentlich reinigen'], url: 'https://www2.jacobs-professional.de/produkt/wmf-1100s-instantmilch', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCDRU4UEWMKNA6RC3UH2DOCMCH2U?channelId=0ap07000000PCg2' },
+   { id: 'witt9100', name: 'Wittenborg 9100', type: 'bean', milk: 'topping', water: 'both', sizeClass: 'large', tags: ['Robust', 'Vielseitig'], specs: ['Geteilter Bohnenbehälter', 'Topping & Kakao', 'Sehr robust'], url: 'https://www2.jacobs-professional.de/produkt/wittenborg-9100-espresso', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC27RIXWBDJNEOVFD2LHHEQPV2SE?channelId=0ap07000000PCg2' },
+   { id: 'caf_exc_touch', name: 'Excellence Touch', type: 'liquid', milk: 'liquid', water: 'fixed', sizeClass: 'xl', tags: ['High-Speed', 'Kantine'], specs: ['1 Tasse in 12 Sek', 'Touchscreen', 'Bis 600 Tassen/Std'], url: 'https://www2.jacobs-professional.de/produkt/cafitessee-excellence-touch-experience', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC2WKK72BV7BB35ADFJGISC3X5V4?channelId=0ap07000000PCg2' },
+   { id: 'caf_compact', name: 'Excellence Compact', type: 'liquid', milk: 'liquid', water: 'both', sizeClass: 'large', tags: ['Kompakt', 'Schnell'], specs: ['Passt unter Küchenschrank', 'Plug & Play', 'Festwasser oder Tank'], url: 'https://www2.jacobs-professional.de/produkt/Cafitesse-Excellence-Compact-Touch-Experience', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCCD2G5RHEYNDVZF3C24ZQKMVSQY?channelId=0ap07000000PCg2' },
+   { id: 'caf_quant300', name: 'Quantum Touch 300', type: 'liquid', milk: 'liquid', water: 'fixed', sizeClass: 'xl', tags: ['Industrie', 'Maximal'], specs: ['Massive Leistung', 'Für Kannen geeignet', 'Robustes Gehäuse'], url: 'https://www2.jacobs-professional.de/produkt/cafitesse-quantum-touch-300', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC5OXCQ3MKRRA3TLALUAKZW2BTUY?channelId=0ap07000000PCg2' },
+   { id: 'lor_mini', name: 'L\'OR Mini', type: 'capsule', milk: 'none', water: 'tank', sizeClass: 'small', tags: ['Premium', 'Einzel'], specs: ['Aluminium Kapseln', 'Espresso Qualität', 'Klein & Edel'], url: 'https://www2.jacobs-professional.de/produkt/lor-mini-kapselmaschine', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCYQBMC2XO2NDI5EDZZK2H3QNEVQ?channelId=0ap07000000PCg2' },
+   { id: 'senseo_maestro', name: 'Senseo Maestro', type: 'pad', milk: 'none', water: 'tank', sizeClass: 'small', tags: ['Pad', 'Budget'], specs: ['Kompostierbare Pads', 'Günstige Tasse', 'Direktwahltasten'], url: 'https://www2.jacobs-professional.de/produkt/senseo-maestro', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCE4LC6E3HMVEO7L5O5IJRNONESU?channelId=0ap07000000PCg2' },
+   { id: 'senseo_switch', name: 'Senseo Switch', type: 'pad', milk: 'none', water: 'tank', sizeClass: 'small', tags: ['2-in-1', 'Flexibel'], specs: ['Pad für Tassen', 'Filter für Kanne', 'Ideal für kleine Büros'], url: 'https://www2.jacobs-professional.de/produkt/senseo-switch-pad-und-filterkaffeemaschine', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MC7ORL62G2EFD57CRJZKDJ2VYIBM?channelId=0ap07000000PCg2' },
+   { id: 'bonamat_b10', name: 'Bonamat B10', type: 'filter', water: 'fixed', sizeClass: 'xl', tags: ['Filter', 'Groß'], specs: ['10 Liter Vorrat', 'Für Stoßzeiten', 'Einfache Bedienung'], url: 'https://www2.jacobs-professional.de/produkt/bonamat-b10', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCNFI4F4FBG5G5PJ2DPOKFI2POMU?channelId=0ap07000000PCg2' },
+   { id: 'jacobs_mini', name: 'Jacobs Mini', type: 'capsule', milk: 'none', water: 'tank', sizeClass: 'small', tags: ['Hotel', 'Kapsel'], specs: ['Ideal fürs Hotelzimmer', 'Kompakt', 'Jacobs Qualität'], url: 'https://www2.jacobs-professional.de/produkt/jacobs-mini-kapselmaschine', image: 'https://www2.jacobs-professional.de/sfsites/c/cms/delivery/media/MCGL6TH4YOWNHDHOL4HU5FKIUTPE?channelId=0ap07000000PCg2' }
 ];
 
-// --- FRAGEN LOGIK (ERWEITERT) ---
+// --- NEUE FRAGEN (GEMÄSS ANFORDERUNG) ---
 const questions = [
   {
-    id: 'einsatz',
-    title: '1. Einsatzbereich',
+    id: 'branche',
+    title: '1. Branche & Avatar',
+    scene: 'start.png', 
+    msg: 'Hallo! Ich bin Ihr JDE-Berater. Wählen Sie bitte Ihre Branche, damit wir starten können.',
     options: [
-      { id: 'office', label: 'Büro / Firma', icon: '🏢' },
+      { id: 'office', label: 'Büro', icon: '🏢' },
       { id: 'gastro', label: 'Gastronomie', icon: '🍽️' },
-      { id: 'care', label: 'Klinik / Pflege', icon: '⚕️' },
-      { id: 'event', label: 'Event / Mobil', icon: '🎉' }
+      { id: 'hotel', label: 'Hotel', icon: '🛎️' },
+      { id: 'production', label: 'Produktion', icon: '🏭' },
+      { id: 'education', label: 'Bildung', icon: '🎓' },
+      { id: 'care', label: 'Health & Care', icon: '⚕️' }
     ]
   },
   {
-    id: 'menge',
-    title: '2. Tagesbedarf',
-    condition: (a) => a.einsatz !== 'event',
+    id: 'einsatzart',
+    title: '2. Art des Einsatzes',
+    scene: 'startb2b.png',
+    msg: 'Benötigen Sie die Lösung dauerhaft oder für ein Event?',
     options: [
-      { id: 'small', label: 'Bis 30 Tassen', icon: '☕', sub: 'Kleines Team' },
-      { id: 'medium', label: '30 – 80 Tassen', icon: '📈', sub: 'Abteilung' },
-      { id: 'large', label: 'Über 80 Tassen', icon: '🏭', sub: 'Großraum / Kantine' }
+      { id: 'permanent', label: 'Dauerhaft', icon: '📅', sub: 'Festinstallation' },
+      { id: 'event', label: 'Einmaliges Event', icon: '🎉', sub: 'Kurzzeitig' }
     ]
   },
   {
-    id: 'art',
-    title: '3. Priorität',
-    condition: (a) => a.einsatz !== 'event',
+    id: 'kundentyp',
+    title: '3. Kundentyp',
+    scene: '', // Kein Bild angegeben
+    msg: 'Handelt es sich um eine gewerbliche oder private Anfrage?',
     options: [
-      { id: 'quality', label: 'Qualität (Bohne)', icon: '🥇', sub: 'Wie vom Barista' },
-      { id: 'speed', label: 'Schnelligkeit', icon: '⚡', sub: 'Keine Wartezeiten' },
-      { id: 'easy', label: 'Einfachheit', icon: '👌', sub: 'Wenig Pflege' },
-      { id: 'filter', label: 'Filterkaffee', icon: '🫖', sub: 'Kannenbrühung' }
+      { id: 'b2b', label: 'Gewerblich', icon: '💼', sub: 'Unternehmen' },
+      { id: 'b2c', label: 'Privat', icon: '🏠', sub: 'Zuhause' }
     ]
   },
   {
-    id: 'milch',
-    title: '4. Milchsystem',
-    condition: (a) => (a.art === 'quality' || a.einsatz === 'gastro') && a.einsatz !== 'event',
+    id: 'bedarf',
+    title: '4. Mitarbeiter & Bedarf',
+    scene: 'start2.png',
+    msg: 'Wie viele Mitarbeiter oder Tassen pro Tag sollen versorgt werden?',
     options: [
-      { id: 'fresh', label: 'Frischmilch', icon: '🥛', sub: 'Bester Geschmack' },
-      { id: 'topping', label: 'Milchpulver', icon: '🍚', sub: 'Hygienisch & Wartungsarm' },
-      { id: 'none', label: 'Nur Schwarz', icon: '☕', sub: 'Keine Milch nötig' }
+      { id: 'xs', label: 'Bis 10', icon: '☕', sub: 'Kleines Büro' },
+      { id: 's', label: '11 – 50', icon: '👥', sub: 'Abteilung' },
+      { id: 'm', label: '51 – 200', icon: '🏢', sub: 'Mittelstand' },
+      { id: 'l', label: 'Über 200', icon: '🏭', sub: 'Großbetrieb' }
     ]
   },
   {
-    id: 'finance',
-    title: '5. Budget & Finanzierung',
-    condition: (a) => a.einsatz !== 'event',
+    id: 'getraenke',
+    title: '5. Getränkeauswahl',
+    scene: '',
+    msg: 'Was soll die Maschine können? Wählen Sie die wichtigste Anforderung.',
     options: [
-      { id: 'buy', label: 'Kauf', icon: '💶', sub: 'Direkter Erwerb' },
-      { id: 'lease', label: 'Leasing / Miete', icon: '📝', sub: 'Monatliche Rate' },
-      { id: 'ppc', label: 'Pay-per-Cup', icon: '☕', sub: 'Zahlung pro Tasse' }
+      { id: 'coffee_only', label: 'Nur Kaffee', icon: '☕', sub: 'Espresso / Crema' },
+      { id: 'milk', label: 'Cappuccino & Co.', icon: '🥛', sub: 'Mit Milchsystem' },
+      { id: 'cocoa', label: 'Volle Vielfalt', icon: '🍫', sub: 'Inkl. Kakao/Tee' }
     ]
   },
   {
-    id: 'space',
-    title: '6. Standort & Anschlüsse',
-    condition: (a) => a.einsatz !== 'event',
+    id: 'wasser',
+    title: '6. Wasseranschluss',
+    scene: '',
+    msg: 'Ist am Aufstellort ein Festwasseranschluss vorhanden?',
     options: [
-      { id: 'full', label: 'Festwasser & Platz', icon: '🚰', sub: 'Alle Anschlüsse vorhanden' },
-      { id: 'tank', label: 'Nur Steckdose', icon: '🔌', sub: 'Tankbetrieb notwendig' },
-      { id: 'compact', label: 'Begrenzter Platz', icon: '📏', sub: 'Kompaktes Gerät nötig' }
-    ]
-  },
-  {
-    id: 'eco',
-    title: '7. Nachhaltigkeit',
-    condition: (a) => a.einsatz !== 'event',
-    options: [
-      { id: 'standard', label: 'Standard', icon: '✔️', sub: 'Gute Effizienz' },
-      { id: 'high', label: 'Hohe Priorität', icon: '🌱', sub: 'Energiesparmodus & Müllvermeidung' }
+      { id: 'yes', label: 'Ja', icon: '🚰', sub: 'Vorhanden' },
+      { id: 'no', label: 'Nein', icon: '🔌', sub: 'Nur Steckdose (Tank)' }
     ]
   }
 ];
 
-// STATE: Added 'emailEntered' flag to track status
 let state = { step: 0, answers: {}, loading: false, emailEntered: false, userEmail: '' };
 const app = document.getElementById('app');
 
+const ADVISOR_IMG = "logo.png";
+
 function render() {
-  // 1. Loading Animation
   if (state.loading) {
-    app.innerHTML = `<div class="center" style="padding:100px 0"><div class="loader"></div><h2>Analysiere Antworten...</h2></div>`;
+    app.innerHTML = `
+      <div class="center" style="padding:100px 0">
+        <div class="loader"></div>
+        <h2>Analysiere Antworten...</h2>
+        <p>Ihr Berater sucht die besten Modelle.</p>
+      </div>`;
     return;
   }
 
-  // 2. CHECK: Sind alle Fragen beantwortet?
+  // --- CHECK FOR ABORTS (Events / Private) ---
+  if (state.answers.einsatzart === 'event') {
+    renderAbort('Event');
+    return;
+  }
+  if (state.answers.kundentyp === 'b2c') {
+    renderAbort('Privat');
+    return;
+  }
+
   if (state.step >= questions.length) {
-    // 2a. Ist die E-Mail schon eingegeben? NEIN -> Zeige Formular
     if (!state.emailEntered) {
       renderLeadForm();
       return;
     }
-    // 2b. Ist E-Mail da? JA -> Zeige Ergebnisse
     renderResults();
     return;
   }
 
-  // 3. Question Rendering
   const q = questions[state.step];
-  if (q.condition && !q.condition(state.answers)) {
-    state.step++;
-    render();
-    return;
-  }
 
   const progress = ((state.step + 1) / questions.length) * 100;
+  
+  // Bild-Logik mit Fallback
+  let sceneHtml = '';
+  if (q.scene && q.scene !== '') {
+    sceneHtml = `<img src="${q.scene}" class="scene-image" alt="Szene" onerror="this.src='https://placehold.co/800x220/F6EADC/331E00?text=JDE+Szene'">`;
+  }
+  
   let html = `
+    ${sceneHtml}
+
+    <div class="advisor-wrap">
+      <img src="${ADVISOR_IMG}" class="advisor-avatar" alt="JDE Berater" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4042/4042356.png'">
+      <div class="advisor-bubble">
+        <strong>Berater:</strong><br>
+        ${q.msg}
+      </div>
+    </div>
+
     <div class="progress"><div class="progress-bar" style="width:${progress}%"></div></div>
     <h2 class="center">${q.title}</h2>
     <div class="grid" style="margin-top:32px">
   `;
+  
   q.options.forEach(opt => {
     const isSel = isSelected(q.id, opt.id);
     html += `
@@ -457,47 +396,74 @@ function render() {
   app.innerHTML = html;
 }
 
-// --- NEW FUNCTION: RENDER EMAIL FORM ---
-function renderLeadForm() {
+// --- SONDERFUNKTION FÜR ABBRUCH ---
+function renderAbort(reason) {
+  let msg = '';
+  if (reason === 'Event') {
+    msg = "Unsere Lösungen sind für den dauerhaften Einsatz konzipiert und leider nicht für einmalige Events geeignet.";
+  } else if (reason === 'Privat') {
+    msg = "Wir sind ausschließlich für Geschäftskunden tätig und können Privatpersonen leider nicht versorgen.";
+  }
+
   app.innerHTML = `
-    <div class="center" style="max-width:500px; margin:40px auto; padding:20px;">
-      <div style="font-size:50px; margin-bottom:20px">🔒</div>
-      <h2>Fast geschafft!</h2>
-      <p>Ihre persönliche Kaffeemaschinen-Empfehlung wurde berechnet.</p>
-      <p style="color:#666; margin-bottom:30px">Bitte geben Sie Ihre E-Mail-Adresse ein, um die Auswertung sofort anzuzeigen.</p>
-      
-      <div style="margin-bottom:20px; text-align:left;">
-        <label style="font-weight:bold; display:block; margin-bottom:8px">Geschäftliche E-Mail Adresse *</label>
-        <input type="email" id="emailInput" placeholder="name@firma.de" style="width:100%; padding:14px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+    <div class="advisor-wrap">
+      <img src="${ADVISOR_IMG}" class="advisor-avatar" alt="JDE Berater" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4042/4042356.png'">
+      <div class="advisor-bubble">
+        <strong>Berater:</strong><br>
+        Oh, da muss ich Sie leider enttäuschen.
       </div>
-      
-      <button onclick="submitEmail()" class="btn btn-primary" style="width:100%; font-size:18px;">Ergebnis anzeigen</button>
-      
-      <p style="font-size:11px; color:#999; margin-top:20px">Wir verwenden Ihre Daten vertraulich gemäß unserer Datenschutzerklärung.</p>
+    </div>
+    <div class="center msg-box">
+      <h3>Wir können leider nicht fortfahren.</h3>
+      <p>${msg}</p>
+      <button class="btn btn-primary" onclick="location.reload()" style="margin-top:20px">Neustart</button>
     </div>
   `;
 }
 
-// --- NEW FUNCTION: HANDLE EMAIL SUBMIT ---
+function renderLeadForm() {
+  app.innerHTML = `
+    <div class="advisor-wrap">
+      <img src="${ADVISOR_IMG}" class="advisor-avatar" alt="JDE Berater" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4042/4042356.png'">
+      <div class="advisor-bubble">
+        <strong>Berater:</strong><br>
+        Ich habe 3 passende Maschinen gefunden! Verraten Sie mir kurz Ihre E-Mail, dann zeige ich Ihnen die Empfehlung.
+      </div>
+    </div>
+    
+    <div class="center" style="max-width:500px; margin:20px auto; padding:20px;">
+      <div style="font-size:50px; margin-bottom:20px">🔒</div>
+      <h2>Ergebnis freischalten</h2>
+      <div style="margin-bottom:20px; text-align:left;">
+        <label style="font-weight:bold; display:block; margin-bottom:8px">Geschäftliche E-Mail Adresse *</label>
+        <input type="email" id="emailInput" placeholder="name@firma.de" style="width:100%; padding:14px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+      </div>
+      <button onclick="submitEmail()" class="btn btn-primary" style="width:100%; font-size:18px;">Ergebnis anzeigen</button>
+      <p style="font-size:11px; color:#999; margin-top:20px">Datenschutz-konform.</p>
+    </div>
+  `;
+}
+
 function submitEmail() {
   const email = document.getElementById('emailInput').value;
   if (!email || !email.includes('@') || email.length < 5) {
     alert('Bitte geben Sie eine gültige E-Mail Adresse ein.');
     return;
   }
-  
-  // Update State to unlock results
   state.userEmail = email;
   state.emailEntered = true;
-  state.loading = true; // Kurzer Fake-Load für Effekt
-  
+  state.loading = true; 
   render();
   setTimeout(() => { state.loading = false; render(); }, 800);
 }
 
-// --- STANDARD LOGIC ---
 function select(qId, optId) {
   state.answers[qId] = optId;
+  // Sofort rendern bei Abbruch-Optionen, damit man nicht "Weiter" klicken muss
+  if((qId === 'einsatzart' && optId === 'event') || (qId === 'kundentyp' && optId === 'b2c')) {
+     render();
+     return;
+  }
   setTimeout(next, 250); 
   render();
 }
@@ -506,99 +472,101 @@ function canNext(qId) { return !!state.answers[qId]; }
 
 function next() {
   state.step++;
-  // Wenn wir fertig sind, zeige Lade-Animation VOR der Email-Abfrage
-  if (state.step >= questions.length && !state.emailEntered) {
-    state.loading = true;
-    render();
-    setTimeout(() => { state.loading = false; render(); }, 1500);
-  } else {
-    render();
-  }
+  render();
 }
 
 function prev() {
   if (state.step > 0) {
     state.step--;
-    const q = questions[state.step];
-    if (q.condition && !q.condition(state.answers)) state.step--;
     render();
   }
 }
 
-// --- FILTER & MATCHING LOGIK ---
 function getResults() {
   const a = state.answers;
+  
+  // LOGIK FILTERUNG
   let matches = allMachines.filter(m => {
-    // 1. Event
-    if (a.einsatz === 'event') return m.type === 'mobile';
-    if (m.type === 'mobile') return false;
-
-    // 2. Menge
-    if (a.menge === 'small') {
-      if (['capsule', 'pad'].includes(m.type)) return true;
-      if (m.id === 'wmf950') return true;
-      return false;
-    }
-
-    // 3. Standort-Filter (Space/Water)
-    if (a.space === 'tank' && m.water === 'fixed') return false;
-    if (a.space === 'compact' && (m.tags.includes('Menge') || m.id === 'soul' || m.id === 'caf_exc_touch')) return false;
-
-    // 4. Technologie
-    if (a.art === 'speed') return m.type === 'liquid';
-    if (a.art === 'quality') {
-       if (m.type !== 'bean') return false;
-       if (a.milch === 'fresh' && m.milk !== 'fresh' && m.milk !== 'both') return false;
-       if (a.milch === 'topping' && m.milk !== 'topping' && m.milk !== 'both') return false;
-       return true;
-    }
     
-    // 5. Nachhaltigkeits-Logik
-    if (a.eco === 'high' && m.type === 'capsule') return false;
+    // 1. WASSER
+    if (a.wasser === 'no' && m.water === 'fixed') return false;
 
-    return true;
+    // 2. BEDARF (Größe)
+    if (a.bedarf === 'xs') { // Bis 10
+        if(m.sizeClass === 'small') return true;
+        if(m.id === 'wmf950') return true; // Ausnahme
+        return false;
+    }
+    if (a.bedarf === 's') { // 11-50
+        if(m.sizeClass === 'medium' || m.sizeClass === 'small') return true;
+        return false;
+    }
+    if (a.bedarf === 'm') { // 51-200
+        if(m.sizeClass === 'large' || m.sizeClass === 'xl') return true;
+        return false;
+    }
+    if (a.bedarf === 'l') { // Über 200
+        if(m.sizeClass === 'xl') return true;
+        // Bei sehr großen Mengen auch Large zulassen, aber XL priorisieren
+        if(m.sizeClass === 'large' && m.type === 'liquid') return true;
+        return false;
+    }
+
+    return true; 
   });
 
-  // Nachfilterung Menge
-  if (a.menge === 'medium') matches = matches.filter(m => !['capsule','pad'].includes(m.type));
-  if (a.menge === 'large') matches = matches.filter(m => m.tags.includes('Industrie') || m.tags.includes('Profi') || m.tags.includes('Performance'));
+  // 3. BRANCHE / GETRÄNKE FEINTUNING
+  // Wenn Kakao wichtig ist, Maschinen ohne Topping/Kakao raus (außer Capsule/Pad)
+  if (a.getraenke === 'cocoa') {
+      matches = matches.filter(m => m.milk === 'topping' || m.milk === 'both' || m.type === 'liquid' || m.type === 'capsule');
+  }
 
-  return matches.slice(0, 4);
+  // Wenn nur Kaffee, komplexe Maschinen nach hinten
+  if (a.getraenke === 'coffee_only') {
+     // Wir filtern nicht hart, aber sortieren vielleicht später.
+     // Hier lassen wir sie drin, da fast alle Kaffee können.
+  }
+
+  // Fallback, falls keine Match (sollte kaum passieren) -> Default Liste
+  if (matches.length === 0) return allMachines.slice(0, 3);
+
+  return matches.slice(0, 3); // Top 3
 }
 
 function renderResults() {
   const results = getResults();
-  const financeModel = state.answers.finance === 'ppc' ? 'Pay-per-Cup Modell' : (state.answers.finance === 'lease' ? 'Leasing-Angebot' : 'Kauf-Angebot');
   
   let html = `
+    <div class="advisor-wrap">
+      <img src="${ADVISOR_IMG}" class="advisor-avatar" alt="JDE Berater" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4042/4042356.png'">
+      <div class="advisor-bubble">
+        <strong>Berater:</strong><br>
+        Hier sind meine Top 3 Empfehlungen für Ihren Bedarf! Diese Geräte bieten die beste Leistung für Ihre Situation.
+      </div>
+    </div>
     <div class="center">
       <h2>Ihre maßgeschneiderte Lösung</h2>
-      <p>Passend zu Ihrem Standort und dem gewünschten <strong>${financeModel}</strong>.</p>
+      <p>Optimiert für <strong>${getResultText(state.answers.bedarf)}</strong> und hohe <strong>Zuverlässigkeit</strong>.</p>
     </div>
     <div class="results-grid">
   `;
   
-  if(results.length === 0) {
-    html += `<p class="center">Für Ihre spezifischen Standort-Anforderungen kontaktieren Sie bitte direkt unseren Kundenservice.</p>`;
-  } else {
-    results.forEach(m => {
-      const specsHtml = m.specs ? m.specs.map(s => `<li>${s}</li>`).join('') : '';
-      
-      html += `
-        <a href="${m.url}" target="_blank" class="machine-card">
-          <div class="m-image-container">
-            <img src="${m.image}" alt="${m.name}" class="m-image" onerror="this.src='https://placehold.co/400x300?text=JDE+Machine'">
-          </div>
-          <div class="m-body">
-            <span class="m-tag">${m.tags.join(' • ')}</span>
-            <div class="m-title">${m.name}</div>
-            <ul class="m-specs">${specsHtml}</ul>
-            <div class="m-link">Zum Produkt ↗</div>
-          </div>
-        </a>
-      `;
-    });
-  }
+  results.forEach(m => {
+    const specsHtml = m.specs ? m.specs.map(s => `<li>${s}</li>`).join('') : '';
+    html += `
+      <a href="${m.url}" target="_blank" class="machine-card">
+        <div class="m-image-container">
+          <img src="${m.image}" alt="${m.name}" class="m-image" onerror="this.src='https://placehold.co/400x300?text=JDE+Machine'">
+        </div>
+        <div class="m-body">
+          <span class="m-tag">${m.tags.join(' • ')}</span>
+          <div class="m-title">${m.name}</div>
+          <ul class="m-specs">${specsHtml}</ul>
+          <div class="m-link">Zum Produkt ↗</div>
+        </div>
+      </a>
+    `;
+  });
   
   html += `</div>
     <div class="center" style="margin-top:40px">
@@ -606,6 +574,14 @@ function renderResults() {
     </div>`;
     
   app.innerHTML = html;
+}
+
+function getResultText(val) {
+    if(val === 'xs') return 'kleine Teams';
+    if(val === 's') return 'Büro-Umgebungen';
+    if(val === 'm') return 'mittlere Betriebe';
+    if(val === 'l') return 'Großversorgung';
+    return 'Ihren Bedarf';
 }
 
 render();
