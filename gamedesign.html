@@ -50,13 +50,21 @@
     h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
 
     /* --- SZENEN-BILD --- */
+/* --- SZENEN-BILD (Zentriert) --- */
     .scene-image {
-      width: 100%;
+      width: 100%;             /* Füllt die Breite aus */
+      max-width: 100%;         /* Sicherheitshalber */
       height: 220px;
-      object-fit: cover;
-      object-position: center bottom;
+      
+      object-fit: cover;       /* Bild füllt den Rahmen, ohne sich zu verzerren */
+      object-position: center center; /* WICHTIG: Fokus genau in die Bildmitte setzen */
+      
       border-radius: 16px;
-      margin-bottom: 20px;
+      
+      /* Zentrierung des Elements selbst (falls width mal kleiner als 100% ist) */
+      display: block;
+      margin: 0 auto 20px auto; 
+      
       border: 1px solid rgba(51,30,0,0.1);
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       background: #eee;
