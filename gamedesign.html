@@ -422,7 +422,11 @@ function renderAbort(reason) {
 }
 
 function renderLeadForm() {
+const sceneImg = 'bye.png'; 
+
   app.innerHTML = `
+    <img src="${sceneImg}" class="scene-image" alt="Ergebnis Szene" onerror="this.src='https://placehold.co/800x220/F6EADC/331E00?text=Ergebnis+bereit'">
+
     <div class="advisor-wrap">
       <img src="${ADVISOR_IMG}" class="advisor-avatar" alt="JDE Berater" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4042/4042356.png'">
       <div class="advisor-bubble">
